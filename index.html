@@ -11,9 +11,10 @@
   <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230b0e0d'/%3E%3Cpath d='M16 20h32v6H35v22h-6V26H16z' fill='%23eab308'/%3E%3C/svg%3E" />
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
   <style>
     :root {
       --gold-light: #fde68a;
@@ -555,18 +556,23 @@
               </span>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <!-- Bloque Categorías WOMAN -->
-              <div id="block-cat-woman" class="rounded-2xl bg-black/45 border border-pink-500/30 p-4 sm:p-5 space-y-4 transition-opacity">
+            <!-- Aviso cuando aún no se elige género -->
+            <div id="ch-gender-prompt" class="rounded-2xl bg-black/50 border border-dashed border-amber-500/40 p-6 text-center text-xs sm:text-sm text-amber-200">
+              Selecciona arriba tu <strong>Género (Mujer u Hombre)</strong> y <strong>Cuántas categorías competirás (1, 2 o 3)</strong> para mostrar únicamente las categorías correspondientes.
+            </div>
+
+            <div class="grid grid-cols-1 gap-6">
+              <!-- Bloque Categorías WOMAN (Solo visible si Género = Mujer) -->
+              <div id="block-cat-woman" class="hidden rounded-2xl bg-black/45 border border-pink-500/35 p-4 sm:p-6 space-y-4">
                 <div class="flex items-center justify-between border-b border-white/10 pb-2.5">
                   <span class="font-aztec font-bold text-sm sm:text-base text-pink-300">CATEGORÍAS WOMAN (Rama Femenil)</span>
-                  <span class="text-[11px] px-2.5 py-0.5 rounded-full bg-pink-500/15 text-pink-300 border border-pink-500/30">1 a 3 categorías</span>
+                  <span id="badge-count-woman" class="text-[11px] px-2.5 py-0.5 rounded-full bg-pink-500/15 text-pink-300 border border-pink-500/30">1 categoría activa</span>
                 </div>
 
-                <div>
-                  <label for="ch-woman-1" class="block text-xs font-semibold text-gray-200 mb-1.5">Categorías WOMAN 1</label>
+                <div id="wrap-woman-1">
+                  <label for="ch-woman-1" class="block text-xs font-semibold text-gray-200 mb-1.5">Categoría WOMAN 1 *</label>
                   <select id="ch-woman-1" name="catWoman1" onchange="updateHarryPricing()" class="form-input w-full rounded-xl px-4 py-3 text-sm">
-                    <option value="">-- Ninguna / No aplica --</option>
+                    <option value="">-- Selecciona tu 1ª categoría --</option>
                     <option value="Kids">Kids ($300 MXN)</option>
                     <option value="Miss Bikini Junior hasta 19 años">Miss Bikini Junior hasta 19 años</option>
                     <option value="Miss Bikini Juvenil hasta 23 años">Miss Bikini Juvenil hasta 23 años</option>
@@ -581,10 +587,10 @@
                   </select>
                 </div>
 
-                <div>
-                  <label for="ch-woman-2" class="block text-xs font-semibold text-gray-200 mb-1.5">Categorías WOMAN 2 (Opcional / 2ª Categoría)</label>
-                  <select id="ch-woman-2" name="catWoman2" onchange="updateHarryPricing()" class="form-input w-full rounded-xl px-4 py-3 text-sm">
-                    <option value="">-- Ninguna --</option>
+                <div id="wrap-woman-2" class="hidden">
+                  <label for="ch-woman-2" class="block text-xs font-semibold text-gray-200 mb-1.5">Categoría WOMAN 2 (2ª Categoría) *</label>
+                  <select id="ch-woman-2" name="catWoman2" disabled onchange="updateHarryPricing()" class="form-input w-full rounded-xl px-4 py-3 text-sm">
+                    <option value="">-- Selecciona tu 2ª categoría --</option>
                     <option value="Kids">Kids</option>
                     <option value="Miss Bikini Junior hasta 19 años">Miss Bikini Junior hasta 19 años</option>
                     <option value="Miss Bikini Juvenil hasta 23 años">Miss Bikini Juvenil hasta 23 años</option>
@@ -599,10 +605,10 @@
                   </select>
                 </div>
 
-                <div>
-                  <label for="ch-woman-3" class="block text-xs font-semibold text-gray-200 mb-1.5">Categorías WOMAN 3 (Opcional / 3ª Categoría)</label>
-                  <select id="ch-woman-3" name="catWoman3" onchange="updateHarryPricing()" class="form-input w-full rounded-xl px-4 py-3 text-sm">
-                    <option value="">-- Ninguna --</option>
+                <div id="wrap-woman-3" class="hidden">
+                  <label for="ch-woman-3" class="block text-xs font-semibold text-gray-200 mb-1.5">Categoría WOMAN 3 (3ª Categoría) *</label>
+                  <select id="ch-woman-3" name="catWoman3" disabled onchange="updateHarryPricing()" class="form-input w-full rounded-xl px-4 py-3 text-sm">
+                    <option value="">-- Selecciona tu 3ª categoría --</option>
                     <option value="Kids">Kids</option>
                     <option value="Miss Bikini Junior hasta 19 años">Miss Bikini Junior hasta 19 años</option>
                     <option value="Miss Bikini Juvenil hasta 23 años">Miss Bikini Juvenil hasta 23 años</option>
@@ -618,17 +624,17 @@
                 </div>
               </div>
 
-              <!-- Bloque Categorías MEN -->
-              <div id="block-cat-men" class="rounded-2xl bg-black/45 border border-amber-500/30 p-4 sm:p-5 space-y-4 transition-opacity">
+              <!-- Bloque Categorías MEN (Solo visible si Género = Hombre) -->
+              <div id="block-cat-men" class="hidden rounded-2xl bg-black/45 border border-amber-500/35 p-4 sm:p-6 space-y-4">
                 <div class="flex items-center justify-between border-b border-white/10 pb-2.5">
                   <span class="font-aztec font-bold text-sm sm:text-base text-amber-300">CATEGORÍAS MEN (Rama Varonil)</span>
-                  <span class="text-[11px] px-2.5 py-0.5 rounded-full bg-amber-500/15 text-amber-300 border border-amber-500/30">1 a 3 categorías</span>
+                  <span id="badge-count-men" class="text-[11px] px-2.5 py-0.5 rounded-full bg-amber-500/15 text-amber-300 border border-amber-500/30">1 categoría activa</span>
                 </div>
 
-                <div>
-                  <label for="ch-men-1" class="block text-xs font-semibold text-gray-200 mb-1.5">Categorías MEN 1</label>
+                <div id="wrap-men-1">
+                  <label for="ch-men-1" class="block text-xs font-semibold text-gray-200 mb-1.5">Categoría MEN 1 *</label>
                   <select id="ch-men-1" name="catMen1" onchange="updateHarryPricing()" class="form-input w-full rounded-xl px-4 py-3 text-sm">
-                    <option value="">-- Ninguna / No aplica --</option>
+                    <option value="">-- Selecciona tu 1ª categoría --</option>
                     <option value="Kids hasta 8 años">Kids hasta 8 años ($300 MXN)</option>
                     <option value="Kids mas de 8 años">Kids mas de 8 años ($300 MXN)</option>
                     <option value="Infantil hasta 16 años">Infantil hasta 16 años</option>
@@ -646,10 +652,10 @@
                   </select>
                 </div>
 
-                <div>
-                  <label for="ch-men-2" class="block text-xs font-semibold text-gray-200 mb-1.5">Categorías MEN 2 (Opcional / 2ª Categoría)</label>
-                  <select id="ch-men-2" name="catMen2" onchange="updateHarryPricing()" class="form-input w-full rounded-xl px-4 py-3 text-sm">
-                    <option value="">-- Ninguna --</option>
+                <div id="wrap-men-2" class="hidden">
+                  <label for="ch-men-2" class="block text-xs font-semibold text-gray-200 mb-1.5">Categoría MEN 2 (2ª Categoría) *</label>
+                  <select id="ch-men-2" name="catMen2" disabled onchange="updateHarryPricing()" class="form-input w-full rounded-xl px-4 py-3 text-sm">
+                    <option value="">-- Selecciona tu 2ª categoría --</option>
                     <option value="Kids hasta 8 años">Kids hasta 8 años</option>
                     <option value="Kids mas de 8 años">Kids mas de 8 años</option>
                     <option value="Infantil hasta 16 años">Infantil hasta 16 años</option>
@@ -667,10 +673,10 @@
                   </select>
                 </div>
 
-                <div>
-                  <label for="ch-men-3" class="block text-xs font-semibold text-gray-200 mb-1.5">Categorías MEN 3 (Opcional / 3ª Categoría)</label>
-                  <select id="ch-men-3" name="catMen3" onchange="updateHarryPricing()" class="form-input w-full rounded-xl px-4 py-3 text-sm">
-                    <option value="">-- Ninguna --</option>
+                <div id="wrap-men-3" class="hidden">
+                  <label for="ch-men-3" class="block text-xs font-semibold text-gray-200 mb-1.5">Categoría MEN 3 (3ª Categoría) *</label>
+                  <select id="ch-men-3" name="catMen3" disabled onchange="updateHarryPricing()" class="form-input w-full rounded-xl px-4 py-3 text-sm">
+                    <option value="">-- Selecciona tu 3ª categoría --</option>
                     <option value="Kids hasta 8 años">Kids hasta 8 años</option>
                     <option value="Kids mas de 8 años">Kids mas de 8 años</option>
                     <option value="Infantil hasta 16 años">Infantil hasta 16 años</option>
@@ -1122,6 +1128,27 @@
           </div>
         </div>
 
+        <!-- Aviso automático si faltan permisos en Reglas de Firestore -->
+        <div id="firestore-rules-alert" class="hidden mt-4 rounded-2xl bg-amber-950/80 border-2 border-amber-400 p-4 text-xs sm:text-sm text-amber-100 space-y-2">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <strong class="text-amber-300 font-bold text-sm">⚠️ Acción requerida en tu consola de Firebase (Permisos de Firestore):</strong>
+            <button type="button" id="btn-copy-firestore-rules" onclick="copyFirestoreRules()" class="px-3 py-1.5 rounded-lg bg-amber-400 text-black font-extrabold text-xs">
+              Copiar Reglas de Firestore
+            </button>
+          </div>
+          <p class="text-gray-200">
+            Tu proyecto <strong>data-variable</strong> tiene las reglas de Firestore cerradas por defecto (<code>Missing or insufficient permissions</code>). Entra a <strong>Firebase Console &rarr; Firestore Database &rarr; Reglas (Rules)</strong>, pega estas reglas y haz clic en <strong>Publicar</strong>:
+          </p>
+          <pre class="bg-black/80 border border-amber-500/40 rounded-xl p-3 font-mono-code text-[11px] text-emerald-300 overflow-x-auto">rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if true;
+    }
+  }
+}</pre>
+        </div>
+
         <!-- KPI Metrics -->
         <div class="grid grid-cols-2 md:grid-cols-4 gap-3.5 pt-5">
           <div class="bg-black/55 border border-white/10 rounded-2xl p-4">
@@ -1304,8 +1331,7 @@
       projectId: "data-variable",
       storageBucket: "data-variable.firebasestorage.app",
       messagingSenderId: "812390101147",
-      appId: "1:812390101147:web:848ff76f02b1675b14963e",
-      databaseURL: "https://data-variable-default-rtdb.firebaseio.com"
+      appId: "1:812390101147:web:848ff76f02b1675b14963e"
     };
 
     const STORAGE_KEY_RECORDS = "copa_harry_powerlift_registros_v1";
@@ -1430,6 +1456,39 @@
     // =========================================================
     // 3. CONEXIÓN CON FIREBASE (FIRESTORE + REALTIME DB)
     // =========================================================
+    let firestorePermissionBlocked = false;
+
+    function startFirestoreListener() {
+      if (!dbFirestore) return;
+      dbFirestore.collection("registros_eventos").onSnapshot(snapshot => {
+        firestorePermissionBlocked = false;
+        const bar = document.getElementById("firestore-rules-alert");
+        if (bar) bar.classList.add("hidden");
+        const remoteList = [];
+        snapshot.forEach(doc => {
+          remoteList.push({ id: doc.id, ...doc.data() });
+        });
+        if (remoteList.length > 0) {
+          remoteList.sort((a, b) => (Number(b.timestamp) || 0) - (Number(a.timestamp) || 0));
+          const mapById = new Map();
+          remoteList.forEach(r => mapById.set(r.id, r));
+          registrations.forEach(localRec => {
+            if (!mapById.has(localRec.id)) mapById.set(localRec.id, localRec);
+          });
+          registrations = Array.from(mapById.values());
+          saveLocalRecords();
+          if (currentView === "admin") renderAdminList();
+        }
+      }, err => {
+        if (err && (err.code === "permission-denied" || String(err.message).includes("insufficient permissions"))) {
+          firestorePermissionBlocked = true;
+          const bar = document.getElementById("firestore-rules-alert");
+          if (bar) bar.classList.remove("hidden");
+          console.info("Aviso Firebase: Activa las reglas públicas en Firebase Console -> Firestore Database -> Reglas (allow read, write: if true;)");
+        }
+      });
+    }
+
     function initFirebaseFromConfig(cfg) {
       if (!cfg || !cfg.apiKey || !cfg.projectId) {
         updateFirebaseStatusUI(false);
@@ -1440,6 +1499,9 @@
           updateFirebaseStatusUI(false);
           return false;
         }
+        // Clear any old cached config that had a bad databaseURL
+        delete cfg.databaseURL;
+
         let app;
         if (!firebase.apps.length) {
           app = firebase.initializeApp(cfg);
@@ -1448,34 +1510,24 @@
         }
         try {
           dbFirestore = firebase.firestore(app);
-          dbFirestore.collection("registros_eventos").orderBy("timestamp", "desc").onSnapshot(snapshot => {
-            const remoteList = [];
-            snapshot.forEach(doc => {
-              remoteList.push({ id: doc.id, ...doc.data() });
+          try {
+            dbFirestore.settings({
+              experimentalAutoDetectLongPolling: true,
+              merge: true
             });
-            if (remoteList.length > 0) {
-              const mapById = new Map();
-              remoteList.forEach(r => mapById.set(r.id, r));
-              registrations.forEach(localRec => {
-                if (!mapById.has(localRec.id)) mapById.set(localRec.id, localRec);
-              });
-              registrations = Array.from(mapById.values());
-              saveLocalRecords();
-              if (currentView === "admin") renderAdminList();
-            }
-          }, err => {
-            console.warn("Firestore listener aviso:", err.message);
-          });
+          } catch (sErr) {}
+
+          if (firebase.auth) {
+            firebase.auth(app).signInAnonymously().then(() => {
+              startFirestoreListener();
+            }).catch(() => {
+              startFirestoreListener();
+            });
+          } else {
+            startFirestoreListener();
+          }
         } catch (fsErr) {
           console.warn("Firestore init:", fsErr);
-        }
-
-        if (cfg.databaseURL) {
-          try {
-            dbRealtime = firebase.database(app);
-          } catch (rtErr) {
-            console.warn("Realtime DB init:", rtErr);
-          }
         }
 
         firebaseConnected = true;
@@ -1522,28 +1574,21 @@
     }
 
     async function persistRegistrationRecord(record) {
-      registrations.unshift(record);
+      const enriched = { ...record, timestamp: Date.now() };
+      registrations.unshift(enriched);
       saveLocalRecords();
 
+      // Send to Firestore asynchronously in background so UI never freezes or blocks
       if (firebaseConnected && dbFirestore) {
-        try {
-          await dbFirestore.collection("registros_eventos").doc(record.id).set({
-            ...record,
-            timestamp: Date.now()
-          });
-        } catch (e) {
-          console.warn("Error guardando en Firestore:", e);
-        }
-      }
-      if (firebaseConnected && dbRealtime) {
-        try {
-          await dbRealtime.ref("registros_eventos/" + record.id).set({
-            ...record,
-            timestamp: Date.now()
-          });
-        } catch (e) {
-          console.warn("Error guardando en Realtime DB:", e);
-        }
+        dbFirestore.collection("registros_eventos").doc(record.id).set(enriched).then(() => {
+          firestorePermissionBlocked = false;
+        }).catch(e => {
+          if (e && (e.code === "permission-denied" || String(e.message).includes("insufficient permissions"))) {
+            firestorePermissionBlocked = true;
+            const bar = document.getElementById("firestore-rules-alert");
+            if (bar) bar.classList.remove("hidden");
+          }
+        });
       }
     }
 
@@ -1694,19 +1739,99 @@
 
     function handleHarryGenderOrCountChange() {
       const genero = document.getElementById("ch-genero").value;
+      const numCats = parseInt(document.getElementById("ch-num-categorias").value || "1", 10);
+
+      const promptEl = document.getElementById("ch-gender-prompt");
       const blockW = document.getElementById("block-cat-woman");
       const blockM = document.getElementById("block-cat-men");
+      const badgeW = document.getElementById("badge-count-woman");
+      const badgeM = document.getElementById("badge-count-men");
+
+      const badgeTxt = numCats === 1 ? "1 categoría habilitada" : numCats + " categorías habilitadas";
+      if (badgeW) badgeW.textContent = badgeTxt;
+      if (badgeM) badgeM.textContent = badgeTxt;
+
+      const wWraps = [
+        document.getElementById("wrap-woman-1"),
+        document.getElementById("wrap-woman-2"),
+        document.getElementById("wrap-woman-3")
+      ];
+      const wSelects = [
+        document.getElementById("ch-woman-1"),
+        document.getElementById("ch-woman-2"),
+        document.getElementById("ch-woman-3")
+      ];
+      const mWraps = [
+        document.getElementById("wrap-men-1"),
+        document.getElementById("wrap-men-2"),
+        document.getElementById("wrap-men-3")
+      ];
+      const mSelects = [
+        document.getElementById("ch-men-1"),
+        document.getElementById("ch-men-2"),
+        document.getElementById("ch-men-3")
+      ];
 
       if (genero === "Mujer") {
-        blockW.classList.remove("opacity-40");
-        blockM.classList.add("opacity-40");
+        if (promptEl) promptEl.classList.add("hidden");
+        blockW.classList.remove("hidden");
+        blockM.classList.add("hidden");
+
+        // Clear and disable all MEN selects
+        mSelects.forEach(sel => {
+          sel.value = "";
+          sel.disabled = true;
+          sel.required = false;
+        });
+
+        // Show and enable only 1..numCats for WOMAN
+        wWraps.forEach((wrap, idx) => {
+          const sel = wSelects[idx];
+          if (idx < numCats) {
+            wrap.classList.remove("hidden");
+            sel.disabled = false;
+            sel.required = true;
+          } else {
+            wrap.classList.add("hidden");
+            sel.value = "";
+            sel.disabled = true;
+            sel.required = false;
+          }
+        });
       } else if (genero === "Hombre") {
-        blockM.classList.remove("opacity-40");
-        blockW.classList.add("opacity-40");
+        if (promptEl) promptEl.classList.add("hidden");
+        blockM.classList.remove("hidden");
+        blockW.classList.add("hidden");
+
+        // Clear and disable all WOMAN selects
+        wSelects.forEach(sel => {
+          sel.value = "";
+          sel.disabled = true;
+          sel.required = false;
+        });
+
+        // Show and enable only 1..numCats for MEN
+        mWraps.forEach((wrap, idx) => {
+          const sel = mSelects[idx];
+          if (idx < numCats) {
+            wrap.classList.remove("hidden");
+            sel.disabled = false;
+            sel.required = true;
+          } else {
+            wrap.classList.add("hidden");
+            sel.value = "";
+            sel.disabled = true;
+            sel.required = false;
+          }
+        });
       } else {
-        blockW.classList.remove("opacity-40");
-        blockM.classList.remove("opacity-40");
+        if (promptEl) promptEl.classList.remove("hidden");
+        blockW.classList.add("hidden");
+        blockM.classList.add("hidden");
+        wSelects.forEach(sel => { sel.value = ""; sel.disabled = true; sel.required = false; });
+        mSelects.forEach(sel => { sel.value = ""; sel.disabled = true; sel.required = false; });
       }
+
       updateHarryPricing();
     }
 
@@ -1801,6 +1926,7 @@
       await persistRegistrationRecord(record);
       currentLastRegistered = record;
       document.getElementById("form-copa-harry").reset();
+      handleHarryGenderOrCountChange();
       clearSignature("sig-canvas-harry");
       openPaymentScreen(record);
     }
@@ -1936,6 +2062,11 @@
 
       switchView("payment");
       showToast("¡Registro guardado! Realiza tu transferencia para confirmar tu lugar");
+    }
+
+    function copyFirestoreRules() {
+      const rulesTxt = "rules_version = '2';\nservice cloud.firestore {\n  match /databases/{database}/documents {\n    match /{document=**} {\n      allow read, write: if true;\n    }\n  }\n}";
+      copyText(rulesTxt, "Reglas de Firestore copiadas. Pégalas en Firebase Console -> Firestore -> Reglas");
     }
 
     function copyCurrentConcept() {
@@ -2789,7 +2920,7 @@
       loadLocalRecords();
       initSignaturePad("sig-canvas-harry");
       initSignaturePad("sig-canvas-pl");
-      updateHarryPricing();
+      handleHarryGenderOrCountChange();
       updatePowerliftExercises();
 
       // Check saved Firebase config or default config

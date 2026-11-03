@@ -2,28 +2,30 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // Verifica que el usuario tenga sesión activa (Anónima para atletas o Email/Pass para Admin)
     function isSignedIn() {
       return request.auth != null;
     }
 
-    // Verifica si el usuario autenticado es Administrador (vía Custom Claim admin:true o email autorizado)
+    // Reconoce como Admin:
+    // 1. El correo hola@hola.com o correos autorizados
+    // 2. Cualquier cuenta autenticada con Email/Password (sign_in_provider == 'password')
+    // 3. Documento en colección users/{uid} con admin == true o role == 'admin'
+    // 4. Custom claim admin == true
     function isAdmin() {
       return isSignedIn() && (
+        request.auth.token.email in ['hola@hola.com', 'admin@copaharry.com', 'harrygymcenter@gmail.com'] ||
+        request.auth.token.firebase.sign_in_provider == 'password' ||
         request.auth.token.admin == true ||
-        request.auth.token.email in [
-          'admin@copaharry.com',
-          'harrygymcenter@gmail.com'
-        ]
+        (exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+         (get(/databases/$(database)/documents/users/$(request.auth.uid)).data.admin == true ||
+          get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin'))
       );
     }
 
-    // Valida formato de teléfono mexicano a 10 dígitos
     function isValidPhone(phone) {
       return phone is string && phone.matches('^[0-9]{10}$');
     }
 
-    // Valida estructura estricta con hasOnly() y tipos de datos al crear un registro
     function isValidRegistration(data) {
       let allowedKeys = [
         'id', 'folio', 'evento', 'fechaRegistro', 'timestamp',
@@ -54,11 +56,20 @@ service cloud.firestore {
         && data.categoriasResumen is string && data.categoriasResumen.size() >= 2 && data.categoriasResumen.size() <= 500;
     }
 
-    match /registros_eventos/{registroId} {
-      // Solo usuarios autenticados (incluyendo sesión anónima) pueden crear un registro válido
-      allow create: if isSignedIn() && isValidRegistration(request.resource.data);
+    // Permitir al administrador leer su propio documento en /users/{userId} o /admins/{userId}
+    match /users/{userId} {
+      allow read: if isSignedIn() && request.auth.uid == userId;
+      allow write: if isAdmin();
+    }
 
-      // Solo administradores autenticados pueden leer, actualizar o borrar registros
+    match /admins/{userId} {
+      allow read: if isSignedIn() && request.auth.uid == userId;
+      allow write: if isAdmin();
+    }
+
+    // Colección de inscripciones
+    match /registros_eventos/{registroId} {
+      allow create: if isSignedIn() && isValidRegistration(request.resource.data);
       allow read, update, delete: if isAdmin();
     }
 

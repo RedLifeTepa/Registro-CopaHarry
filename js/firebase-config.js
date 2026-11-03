@@ -27,6 +27,7 @@ export const firebaseConfig = {
 };
 
 export const AUTHORIZED_ADMIN_EMAILS = [
+  "hola@hola.com",
   "admin@copaharry.com",
   "harrygymcenter@gmail.com"
 ];

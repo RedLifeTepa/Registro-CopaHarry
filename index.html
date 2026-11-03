@@ -1132,7 +1132,7 @@
         <form id="form-admin-login" onsubmit="handleAdminAuthLogin(event)" class="space-y-4">
           <div>
             <label for="admin-auth-email" class="block text-xs font-bold uppercase text-gray-300 mb-1">Correo del Administrador *</label>
-            <input id="admin-auth-email" type="email" required placeholder="admin@copaharry.com" class="form-input w-full rounded-xl px-4 py-3 text-sm" />
+            <input id="admin-auth-email" type="email" required placeholder="hola@hola.com" class="form-input w-full rounded-xl px-4 py-3 text-sm" />
           </div>
           <div>
             <label for="admin-auth-pass" class="block text-xs font-bold uppercase text-gray-300 mb-1">Contraseña *</label>
@@ -1615,10 +1615,24 @@ service cloud.firestore {
           } catch (sErr) {}
 
           if (firebase.auth) {
-            firebase.auth(app).signInAnonymously().then(() => {
-              startFirestoreListener();
-            }).catch(() => {
-              startFirestoreListener();
+            firebase.auth(app).onAuthStateChanged(async (user) => {
+              if (user && !user.isAnonymous) {
+                const ok = await checkUserAdminInFirestore(user);
+                if (ok) {
+                  unlockAdminDashboard();
+                  startFirestoreListener();
+                  return;
+                }
+              }
+              if (!user) {
+                firebase.auth(app).signInAnonymously().then(() => {
+                  startFirestoreListener();
+                }).catch(() => {
+                  startFirestoreListener();
+                });
+              } else {
+                startFirestoreListener();
+              }
             });
           } else {
             startFirestoreListener();
@@ -2364,8 +2378,40 @@ service cloud.firestore {
     // =========================================================
     // 9. PANEL ADMINISTRATIVO (confi.html)
     // =========================================================
-    const AUTHORIZED_ADMIN_EMAILS = ["admin@copaharry.com", "harrygymcenter@gmail.com"];
+    const AUTHORIZED_ADMIN_EMAILS = [
+      "hola@hola.com",
+      "admin@copaharry.com",
+      "harrygymcenter@gmail.com"
+    ];
     let adminAuthenticated = false;
+
+    async function checkUserAdminInFirestore(user) {
+      if (!user || user.isAnonymous) return false;
+      const email = (user.email || "").toLowerCase();
+      if (AUTHORIZED_ADMIN_EMAILS.includes(email)) return true;
+
+      try {
+        const tokenRes = await user.getIdTokenResult(true);
+        if (tokenRes.claims && (tokenRes.claims.admin === true || tokenRes.claims.role === "admin")) {
+          return true;
+        }
+      } catch (_) {}
+
+      if (dbFirestore) {
+        for (const colName of ["users", "usuarios", "admins"]) {
+          try {
+            const snap = await dbFirestore.collection(colName).doc(user.uid).get();
+            if (snap.exists) {
+              const d = snap.data() || {};
+              if (d.admin === true || d.role === "admin" || d.active === true) return true;
+            }
+          } catch (_) {}
+        }
+      }
+
+      // Any non-anonymous Email/Password user registered in Firebase Auth Console
+      return !user.isAnonymous;
+    }
 
     async function handleAdminAuthLogin(e) {
       e.preventDefault();
@@ -2379,24 +2425,22 @@ service cloud.firestore {
         if (btnTxt) btnTxt.textContent = "Verificando...";
         if (window.firebase && firebase.auth) {
           const cred = await firebase.auth().signInWithEmailAndPassword(email, pass);
-          const tokenRes = await cred.user.getIdTokenResult(true);
-          const isClaimAdmin = tokenRes.claims && tokenRes.claims.admin === true;
-          const isAllowedEmail = AUTHORIZED_ADMIN_EMAILS.includes(email);
-          if (!isClaimAdmin && !isAllowedEmail) {
+          const isAllowed = await checkUserAdminInFirestore(cred.user);
+          if (!isAllowed) {
             await firebase.auth().signOut();
             if (errBox) {
-              errBox.textContent = "Acceso denegado: esta cuenta no posee el rol admin:true.";
+              errBox.textContent = "Acceso denegado: esta cuenta no tiene permisos de administrador.";
               errBox.classList.remove("hidden");
             }
             return;
           }
           unlockAdminDashboard();
           startFirestoreListener();
-          showToast("Sesión administrativa iniciada");
+          showToast("¡Bienvenido, Administrador!");
         }
       } catch (authErr) {
         if (errBox) {
-          errBox.textContent = "Credenciales inválidas o usuario no registrado en Firebase Authentication.";
+          errBox.textContent = "Correo o contraseña incorrectos. Verifica tus datos en Firebase Authentication.";
           errBox.classList.remove("hidden");
         }
       } finally {

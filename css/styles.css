@@ -1,0 +1,40 @@
+/* Hoja de estilos modular (/css/styles.css) - Copa Harry & Torneo Powerlifting */
+:root {
+  --gold-light: #fde68a;
+  --gold-main: #d4af37;
+  --gold-dark: #926f1b;
+  --jade-main: #10b981;
+  --jade-dark: #065f46;
+  --stone-bg: #0b0e0d;
+  --stone-card: #131816;
+  --stone-border: #2a332e;
+}
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background-color: var(--stone-bg);
+  color: #f3f4f6;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+.font-aztec { font-family: 'Cinzel', serif; letter-spacing: 0.04em; }
+.font-mono-code { font-family: 'JetBrains Mono', monospace; }
+.gold-gradient-text {
+  background: linear-gradient(135deg, #fff3b0 0%, #eab308 45%, #b45309 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.form-input {
+  background-color: #181f1c;
+  border: 1px solid #2e3b35;
+  color: #f9fafb;
+  transition: all 0.18s ease;
+}
+.form-input:focus {
+  outline: none;
+  border-color: #eab308;
+  box-shadow: 0 0 0 3px rgba(234, 179, 8, 0.2);
+}
+.form-input[aria-invalid="true"] {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.25);
+}

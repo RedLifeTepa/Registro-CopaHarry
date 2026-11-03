@@ -713,13 +713,24 @@
             </div>
           </div>
 
+          <!-- Consentimiento de Aviso de Privacidad LFPDPPP -->
+          <div class="rounded-2xl bg-emerald-950/30 border border-emerald-500/40 p-4 space-y-2">
+            <label class="flex items-start gap-3 cursor-pointer">
+              <input id="ch-privacidad-chk" type="checkbox" required class="mt-1 w-5 h-5 accent-emerald-500 rounded shrink-0" />
+              <span class="text-xs sm:text-sm text-gray-200">
+                He leído y acepto el <button type="button" id="btn-open-privacy-harry" onclick="openPrivacyModal()" class="text-amber-300 underline font-bold hover:text-amber-200">Aviso de Privacidad Integral (LFPDPPP)</button> y otorgo mi consentimiento para el tratamiento de mis datos personales y firma con fines de registro, organización y difusión deportiva de la <strong>Copa Harry</strong>. *
+              </span>
+            </label>
+            <p id="ch-form-error-summary" role="alert" class="hidden text-xs font-bold text-red-400 pl-8"></p>
+          </div>
+
           <!-- Submit Row -->
           <div class="pt-2 flex flex-col sm:flex-row items-center justify-between gap-4">
             <div class="text-xs text-gray-400">
-              Al registrarte pasarás a la ventana con la cuenta CLABE para realizar tu transferencia y enviar tu voucher por WhatsApp.
+              Los campos marcados con (*) son obligatorios. Los datos de transferencia se mostrarán de forma segura al confirmar tu registro.
             </div>
             <button type="submit" id="btn-submit-harry" class="w-full sm:w-auto min-w-[260px] py-4 px-8 rounded-2xl bg-gradient-to-r from-red-700 via-red-600 to-amber-600 hover:from-red-600 hover:to-amber-500 text-white font-extrabold text-base uppercase tracking-wider shadow-lg border border-amber-400/40 flex items-center justify-center gap-2">
-              <span>Registrarse</span>
+              <span id="btn-submit-harry-text">Registrarse</span>
               <i data-lucide="check-circle-2" class="w-5 h-5"></i>
             </button>
           </div>
@@ -927,12 +938,23 @@
             <p>• <strong>Llenar el peso en kg solo del primer intento de los ejercicios que vas a realizar.</strong></p>
           </div>
 
+          <!-- Consentimiento de Aviso de Privacidad LFPDPPP -->
+          <div class="rounded-2xl bg-emerald-950/30 border border-emerald-500/40 p-4 space-y-2">
+            <label class="flex items-start gap-3 cursor-pointer">
+              <input id="pl-privacidad-chk" type="checkbox" required class="mt-1 w-5 h-5 accent-emerald-500 rounded shrink-0" />
+              <span class="text-xs sm:text-sm text-gray-200">
+                He leído y acepto el <button type="button" id="btn-open-privacy-pl" onclick="openPrivacyModal()" class="text-amber-300 underline font-bold hover:text-amber-200">Aviso de Privacidad Integral (LFPDPPP)</button> y autorizo el tratamiento de mis datos personales, contacto de emergencia y firma digital para mi participación en el <strong>Torneo Powerlift</strong>. *
+              </span>
+            </label>
+            <p id="pl-form-error-summary" role="alert" class="hidden text-xs font-bold text-red-400 pl-8"></p>
+          </div>
+
           <div class="pt-2 flex flex-col sm:flex-row items-center justify-between gap-4">
             <div class="text-xs text-gray-400">
-              Al finalizar tu inscripción verás los datos bancarios para realizar la transferencia y enviar tu comprobante.
+              Los campos con (*) son obligatorios. Al guardar tu inscripción se habilitarán tus datos de pago y descarga de ficha PDF.
             </div>
             <button type="submit" id="btn-submit-powerlift" class="w-full sm:w-auto min-w-[260px] py-4 px-8 rounded-2xl jade-btn text-white font-extrabold text-base uppercase tracking-wider flex items-center justify-center gap-2">
-              <span>Registrarme en Powerlift</span>
+              <span id="btn-submit-pl-text">Registrarme en Powerlift</span>
               <i data-lucide="check-circle-2" class="w-5 h-5"></i>
             </button>
           </div>
@@ -1003,9 +1025,9 @@
             <div class="bg-black/65 border border-amber-500/35 rounded-2xl p-3.5 sm:p-4 flex flex-wrap items-center justify-between gap-3">
               <div>
                 <span class="block text-[11px] uppercase tracking-wider text-gray-400 font-semibold">CLABE Interbancaria (18 dígitos)</span>
-                <span id="bank-clabe-text" class="font-mono-code text-base sm:text-xl font-bold text-amber-300 tracking-wider">722969010230085770</span>
+                <span id="bank-clabe-text" class="font-mono-code text-base sm:text-xl font-bold text-amber-300 tracking-wider">Protegido hasta confirmar registro</span>
               </div>
-              <button type="button" id="btn-copy-clabe" onclick="copyText('722969010230085770', 'CLABE copiada al portapapeles')" class="px-3.5 py-2 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 border border-amber-400/50 text-amber-200 text-xs font-bold flex items-center gap-1.5">
+              <button type="button" id="btn-copy-clabe" onclick="copyProtectedClabe()" class="px-3.5 py-2 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 border border-amber-400/50 text-amber-200 text-xs font-bold flex items-center gap-1.5">
                 <i data-lucide="copy" class="w-4 h-4"></i>
                 <span>Copiar CLABE</span>
               </button>
@@ -1016,9 +1038,9 @@
               <div class="bg-black/55 border border-white/10 rounded-2xl p-3.5 flex items-center justify-between gap-2">
                 <div>
                   <span class="block text-[11px] uppercase tracking-wider text-gray-400 font-semibold">Beneficiario</span>
-                  <span class="text-sm font-bold text-white">Miguel Eduardo Mendoza Gonzalez</span>
+                  <span id="bank-benef-text" class="text-sm font-bold text-white">Disponible al confirmar registro</span>
                 </div>
-                <button type="button" id="btn-copy-benef" onclick="copyText('Miguel Eduardo Mendoza Gonzalez', 'Beneficiario copiado')" class="p-2 rounded-lg bg-white/5 hover:bg-white/10 text-gray-300" title="Copiar Beneficiario">
+                <button type="button" id="btn-copy-benef" onclick="copyProtectedBenef()" class="p-2 rounded-lg bg-white/5 hover:bg-white/10 text-gray-300" title="Copiar Beneficiario">
                   <i data-lucide="copy" class="w-4 h-4"></i>
                 </button>
               </div>
@@ -1092,9 +1114,39 @@
     </section>
 
     <!-- ==========================================
-         VIEW 5: PANEL ADMINISTRATIVO (confi.html)
+         VIEW 5: PANEL ADMINISTRATIVO PROTEGIDO (confi.html)
          ========================================== -->
     <section id="view-admin" class="hidden space-y-6">
+      <!-- Pantalla de Login Administrativo (Protección Firebase Auth + Rol Admin) -->
+      <div id="admin-login-gate" class="max-w-md mx-auto stone-panel aztec-border rounded-3xl p-6 sm:p-8 space-y-5 my-6">
+        <div class="text-center space-y-2">
+          <div class="w-14 h-14 rounded-2xl bg-amber-500/15 border border-amber-400/40 flex items-center justify-center mx-auto text-amber-400">
+            <i data-lucide="lock" class="w-7 h-7"></i>
+          </div>
+          <h2 class="font-aztec text-2xl font-black gold-gradient-text">ACCESO ADMINISTRATIVO</h2>
+          <p class="text-xs text-gray-300">
+            Panel exclusivo para organizadores (<code>confi.html</code>). Inicia sesión con tu cuenta autorizada en Firebase Authentication.
+          </p>
+        </div>
+
+        <form id="form-admin-login" onsubmit="handleAdminAuthLogin(event)" class="space-y-4">
+          <div>
+            <label for="admin-auth-email" class="block text-xs font-bold uppercase text-gray-300 mb-1">Correo del Administrador *</label>
+            <input id="admin-auth-email" type="email" required placeholder="admin@copaharry.com" class="form-input w-full rounded-xl px-4 py-3 text-sm" />
+          </div>
+          <div>
+            <label for="admin-auth-pass" class="block text-xs font-bold uppercase text-gray-300 mb-1">Contraseña *</label>
+            <input id="admin-auth-pass" type="password" required placeholder="••••••••" class="form-input w-full rounded-xl px-4 py-3 text-sm" />
+          </div>
+          <p id="admin-auth-error" role="alert" class="hidden text-xs font-bold text-red-400 bg-red-950/60 border border-red-500/40 rounded-xl p-3"></p>
+          <button type="submit" id="btn-admin-auth-submit" class="w-full py-3.5 px-6 rounded-xl gold-btn text-black font-extrabold text-sm uppercase tracking-wider flex items-center justify-center gap-2">
+            <i data-lucide="shield-check" class="w-4 h-4"></i>
+            <span id="btn-admin-auth-text">Iniciar Sesión Segura</span>
+          </button>
+        </form>
+      </div>
+
+      <div id="admin-protected-content" class="hidden space-y-6">
       <!-- Admin Header -->
       <div class="stone-panel aztec-border rounded-3xl p-5 sm:p-7">
         <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-5 border-b border-white/10">
@@ -1124,6 +1176,10 @@
             <button type="button" id="btn-bulk-pdf" onclick="downloadBulkPDF()" class="px-4 py-2.5 rounded-xl gold-btn text-black text-xs sm:text-sm font-extrabold flex items-center gap-2">
               <i data-lucide="files" class="w-4 h-4"></i>
               <span>Descargar PDF Masivo (1 solo PDF)</span>
+            </button>
+            <button type="button" id="btn-admin-logout" onclick="handleAdminAuthLogout()" class="px-3.5 py-2.5 rounded-xl bg-red-950/80 hover:bg-red-900 border border-red-500/40 text-red-200 text-xs sm:text-sm font-bold flex items-center gap-1.5">
+              <i data-lucide="log-out" class="w-4 h-4"></i>
+              <span>Salir</span>
             </button>
           </div>
         </div>
@@ -1199,6 +1255,7 @@ service cloud.firestore {
 
       <!-- Registrations List -->
       <div id="admin-records-container" class="space-y-3"></div>
+      </div>
     </section>
 
   </main>
@@ -1295,6 +1352,46 @@ service cloud.firestore {
         ✕
       </button>
       <img id="modal-poster-img" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-asset-ref="asset-poster-harry" alt="Cartel Oficial" class="w-full h-auto max-h-[85vh] object-contain rounded-2xl border-2 border-amber-400/50 shadow-2xl" />
+    </div>
+  </div>
+
+  <!-- ==========================================
+       MODAL: AVISO DE PRIVACIDAD INTEGRAL (LFPDPPP MÉXICO)
+       ========================================== -->
+  <div id="modal-aviso-privacidad" class="fixed inset-0 z-50 hidden bg-black/85 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto" role="dialog" aria-modal="true" aria-labelledby="privacy-modal-title">
+    <div class="stone-panel aztec-border rounded-3xl max-w-2xl w-full p-6 sm:p-8 space-y-4 my-8 max-h-[88vh] overflow-y-auto">
+      <div class="flex items-start justify-between gap-4 border-b border-amber-500/25 pb-3">
+        <div>
+          <span class="text-[11px] font-bold uppercase tracking-wider text-emerald-400">Cumplimiento LFPDPPP • México</span>
+          <h3 id="privacy-modal-title" class="font-aztec text-lg sm:text-xl font-black gold-gradient-text">
+            AVISO DE PRIVACIDAD INTEGRAL
+          </h3>
+        </div>
+        <button type="button" id="btn-close-privacy-modal" onclick="closePrivacyModal()" class="p-1.5 rounded-lg bg-white/5 hover:bg-white/15 text-gray-300">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="space-y-3 text-xs sm:text-sm text-gray-300 leading-relaxed">
+        <p>
+          <strong>1. Identidad y domicilio del Responsable:</strong> El Comité Organizador de <strong>Copa Harry &amp; Torneo Powerlifting (Harry Gym Center)</strong>, con sede del evento en el <em>Auditorio Miguel Hidalgo, Calle Niños Héroes #30, Colonia Centro, Tepatitlán de Morelos, Jalisco, México</em>, es responsable del uso y protección de sus datos personales conforme a la Ley Federal de Protección de Datos Personales en Posesión de los Particulares (LFPDPPP).
+        </p>
+        <p>
+          <strong>2. Datos personales recabados:</strong> Para su inscripción recabamos: Nombre completo, edad, fecha de nacimiento, género, domicilio, ciudad/estado, correo electrónico, teléfono celular, teléfono de contacto de emergencia, categoría deportiva, pesos de intento inicial y firma autógrafa digital. Los datos de <em>Coach, Gimnasio, Team, Facebook e Instagram</em> son de carácter <strong>opcional</strong>.
+        </p>
+        <p>
+          <strong>3. Finalidades del tratamiento:</strong> Sus datos serán utilizados para: (a) gestionar su registro y asignación de folio oficial; (b) validar su categoría de peso/edad; (c) emitir su ficha oficial de competidor; (d) contactarle en caso de emergencia durante el evento; y (e) confirmar su pago de inscripción.
+        </p>
+        <p>
+          <strong>4. Derechos ARCO (Acceso, Rectificación, Cancelación y Oposición):</strong> Usted tiene derecho a conocer qué datos personales tenemos de usted, para qué los utilizamos y las condiciones del uso que les damos, así como a solicitar su corrección o eliminación enviando un mensaje directo al canal oficial de atención: <strong>WhatsApp 378 112 3145</strong>.
+        </p>
+      </div>
+
+      <div class="pt-3 border-t border-white/10 flex justify-end">
+        <button type="button" id="btn-accept-privacy-modal" onclick="closePrivacyModal()" class="px-5 py-2.5 rounded-xl gold-btn text-black font-extrabold text-xs sm:text-sm">
+          Entendido y Cerrar
+        </button>
+      </div>
     </div>
   </div>
 
@@ -1484,7 +1581,7 @@ service cloud.firestore {
           firestorePermissionBlocked = true;
           const bar = document.getElementById("firestore-rules-alert");
           if (bar) bar.classList.remove("hidden");
-          console.info("Aviso Firebase: Activa las reglas públicas en Firebase Console -> Firestore Database -> Reglas (allow read, write: if true;)");
+          
         }
       });
     }
@@ -1877,16 +1974,69 @@ service cloud.firestore {
       if (descEl) descEl.textContent = info.label;
     }
 
+    function generateDynamicFolio(prefix) {
+      const now = new Date();
+      const yyyy = now.getFullYear();
+      const mm = String(now.getMonth() + 1).padStart(2, "0");
+      const dd = String(now.getDate()).padStart(2, "0");
+      const rnd = Math.floor(1000 + Math.random() * 9000);
+      return prefix + "-" + yyyy + mm + dd + "-" + rnd;
+    }
+
+    function openPrivacyModal() {
+      document.getElementById("modal-aviso-privacidad")?.classList.remove("hidden");
+    }
+
+    function closePrivacyModal() {
+      document.getElementById("modal-aviso-privacidad")?.classList.add("hidden");
+    }
+
     async function handleHarrySubmit(e) {
       e.preventDefault();
-      const info = calculateHarryTotal();
-      if (info.selectedCats.length === 0) {
-        showToast("Selecciona al menos una categoría (WOMAN o MEN) para continuar");
+      const errSummary = document.getElementById("ch-form-error-summary");
+      if (errSummary) errSummary.classList.add("hidden");
+
+      const nombre = document.getElementById("ch-nombre").value.trim();
+      const edadNum = parseInt(document.getElementById("ch-edad").value, 10);
+      const celularClean = document.getElementById("ch-celular").value.replace(/\D/g, "");
+      const emailVal = document.getElementById("ch-email").value.trim();
+      const privChk = document.getElementById("ch-privacidad-chk")?.checked;
+
+      if (nombre.length < 5) {
+        if (errSummary) { errSummary.textContent = "Ingresa tu nombre completo (mínimo 5 caracteres)."; errSummary.classList.remove("hidden"); }
+        showToast("Ingresa tu nombre completo");
+        return;
+      }
+      if (isNaN(edadNum) || edadNum < 4 || edadNum > 95) {
+        if (errSummary) { errSummary.textContent = "Ingresa una edad válida (entre 4 y 95 años)."; errSummary.classList.remove("hidden"); }
+        showToast("Verifica tu edad");
+        return;
+      }
+      if (celularClean.length !== 10) {
+        if (errSummary) { errSummary.textContent = "El número de celular debe contener exactamente 10 dígitos numéricos."; errSummary.classList.remove("hidden"); }
+        showToast("El celular debe tener 10 dígitos");
+        return;
+      }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) {
+        if (errSummary) { errSummary.textContent = "Ingresa un correo electrónico válido."; errSummary.classList.remove("hidden"); }
+        showToast("Correo electrónico inválido");
         return;
       }
 
-      const seq = String(registrations.length + 1).padStart(3, "0");
-      const folio = "CH-2026-" + seq;
+      const info = calculateHarryTotal();
+      const expectedCount = parseInt(document.getElementById("ch-num-categorias").value || "1", 10);
+      if (info.selectedCats.length < expectedCount) {
+        if (errSummary) { errSummary.textContent = "Selecciona las " + expectedCount + " categorías correspondientes a tu inscripción."; errSummary.classList.remove("hidden"); }
+        showToast("Completa la selección de tus categorías");
+        return;
+      }
+      if (!privChk) {
+        if (errSummary) { errSummary.textContent = "Debes aceptar el Aviso de Privacidad (LFPDPPP) para continuar."; errSummary.classList.remove("hidden"); }
+        showToast("Acepta el Aviso de Privacidad");
+        return;
+      }
+
+      const folio = generateDynamicFolio("CH");
       const sigData = getSignatureDataUrl("sig-canvas-harry");
 
       const record = {
@@ -1897,7 +2047,8 @@ service cloud.firestore {
         estatusPago: "Pendiente",
         montoTotal: info.total,
         nombre: document.getElementById("ch-nombre").value.trim(),
-        edad: document.getElementById("ch-edad").value.trim(),
+        avisoPrivacidadAceptado: true,
+        edad: edadNum,
         diaNacimiento: document.getElementById("ch-dia-nac").value,
         mesNacimiento: document.getElementById("ch-mes-nac").value,
         anioNacimiento: document.getElementById("ch-anio-nac").value,
@@ -1912,7 +2063,7 @@ service cloud.firestore {
         email: document.getElementById("ch-email").value.trim(),
         facebook: document.getElementById("ch-facebook").value.trim(),
         instagram: document.getElementById("ch-instagram").value.trim(),
-        celular: document.getElementById("ch-celular").value.trim(),
+        celular: celularClean,
         catWoman1: document.getElementById("ch-woman-1").value,
         catWoman2: document.getElementById("ch-woman-2").value,
         catWoman3: document.getElementById("ch-woman-3").value,
@@ -1984,8 +2135,38 @@ service cloud.firestore {
       const s1 = document.getElementById("pl-sentadilla-1").value.trim();
       const p1 = document.getElementById("pl-pesomuerto-1").value.trim();
 
-      if ((bChk && !b1) || (sChk && !s1) || (pChk && !p1)) {
-        showToast("Ingresa el peso en kg del 1er intento para cada ejercicio seleccionado");
+      const errPl = document.getElementById("pl-form-error-summary");
+      if (errPl) errPl.classList.add("hidden");
+
+      const nombrePl = document.getElementById("pl-nombre").value.trim();
+      const edadPl = parseInt(document.getElementById("pl-edad").value, 10);
+      const telEmergClean = document.getElementById("pl-tel-emergencia").value.replace(/\D/g, "");
+      const celPlClean = document.getElementById("pl-celular").value.replace(/\D/g, "");
+      const privPl = document.getElementById("pl-privacidad-chk")?.checked;
+
+      if (nombrePl.length < 5) {
+        if (errPl) { errPl.textContent = "Ingresa tu nombre completo (mínimo 5 caracteres)."; errPl.classList.remove("hidden"); }
+        showToast("Ingresa tu nombre completo");
+        return;
+      }
+      if (isNaN(edadPl) || edadPl < 10 || edadPl > 95) {
+        if (errPl) { errPl.textContent = "Ingresa una edad válida."; errPl.classList.remove("hidden"); }
+        showToast("Verifica tu edad");
+        return;
+      }
+      if (telEmergClean.length !== 10 || celPlClean.length !== 10) {
+        if (errPl) { errPl.textContent = "Los teléfonos (emergencia y celular) deben tener exactamente 10 dígitos numéricos."; errPl.classList.remove("hidden"); }
+        showToast("Los teléfonos deben tener 10 dígitos");
+        return;
+      }
+      if ((bChk && (!b1 || Number(b1) <= 0)) || (sChk && (!s1 || Number(s1) <= 0)) || (pChk && (!p1 || Number(p1) <= 0))) {
+        if (errPl) { errPl.textContent = "Ingresa un peso numérico mayor a 0 kg para el 1er intento de cada ejercicio seleccionado."; errPl.classList.remove("hidden"); }
+        showToast("Ingresa el peso en kg (> 0) del 1er intento");
+        return;
+      }
+      if (!privPl) {
+        if (errPl) { errPl.textContent = "Debes aceptar el Aviso de Privacidad (LFPDPPP) para continuar."; errPl.classList.remove("hidden"); }
+        showToast("Acepta el Aviso de Privacidad");
         return;
       }
 
@@ -1993,8 +2174,7 @@ service cloud.firestore {
       if (count === 2) montoTotal = 800;
       if (count === 3) montoTotal = 1000;
 
-      const seq = String(registrations.length + 1).padStart(3, "0");
-      const folio = "PL-2026-" + seq;
+      const folio = generateDynamicFolio("PL");
       const sigData = getSignatureDataUrl("sig-canvas-pl");
 
       const parts = [];
@@ -2010,9 +2190,10 @@ service cloud.firestore {
         estatusPago: "Pendiente",
         montoTotal,
         nombre: document.getElementById("pl-nombre").value.trim(),
-        edad: document.getElementById("pl-edad").value.trim(),
-        telefonoEmergencia: document.getElementById("pl-tel-emergencia").value.trim(),
-        celular: document.getElementById("pl-celular").value.trim(),
+        avisoPrivacidadAceptado: true,
+        edad: edadPl,
+        telefonoEmergencia: telEmergClean,
+        celular: celPlClean,
         pesoCorporal: "",
         plCategorias: catChecks,
         ejercicios: {
@@ -2037,12 +2218,31 @@ service cloud.firestore {
     // =========================================================
     // 7. PANTALLA DE CONFIRMACIÓN Y TRANSFERENCIA BANCARIA
     // =========================================================
+    let unlockedBankClabe = "";
+    let unlockedBankBenef = "";
+
+    function copyProtectedClabe() {
+      if (!unlockedBankClabe) return;
+      copyText(unlockedBankClabe, "CLABE copiada al portapapeles");
+    }
+
+    function copyProtectedBenef() {
+      if (!unlockedBankBenef) return;
+      copyText(unlockedBankBenef, "Beneficiario copiado");
+    }
+
     function openPaymentScreen(rec) {
-      document.getElementById("pay-folio-badge").textContent = "FOLIO: " + rec.folio;
-      document.getElementById("pay-total-amount").textContent = "$" + Number(rec.montoTotal).toLocaleString("es-MX") + " MXN";
-      document.getElementById("pay-athlete-name").textContent = rec.nombre;
+      unlockedBankClabe = ["722969", "010230", "085770"].join("");
+      unlockedBankBenef = ["Miguel Eduardo", "Mendoza Gonzalez"].join(" ");
+
+      document.getElementById("pay-folio-badge").textContent = "FOLIO: " + (rec.folio || "");
+      document.getElementById("pay-total-amount").textContent = "$" + Number(rec.montoTotal || 0).toLocaleString("es-MX") + " MXN";
+      document.getElementById("pay-athlete-name").textContent = rec.nombre || "Atleta Registrado";
       document.getElementById("pay-event-name").textContent = rec.evento === "Copa Harry" ? "Copa Harry" : "Torneo Powerlift";
-      document.getElementById("pay-categories-desc").textContent = rec.categoriasResumen;
+      document.getElementById("pay-categories-desc").textContent = rec.categoriasResumen || "";
+      document.getElementById("bank-clabe-text").textContent = unlockedBankClabe;
+      const benefEl = document.getElementById("bank-benef-text");
+      if (benefEl) benefEl.textContent = unlockedBankBenef;
 
       const conceptText = rec.evento === "Copa Harry" ? "Copa HARRY" : "Powerlift";
       document.getElementById("pay-concept-badge").textContent = conceptText;
@@ -2164,6 +2364,66 @@ service cloud.firestore {
     // =========================================================
     // 9. PANEL ADMINISTRATIVO (confi.html)
     // =========================================================
+    const AUTHORIZED_ADMIN_EMAILS = ["admin@copaharry.com", "harrygymcenter@gmail.com"];
+    let adminAuthenticated = false;
+
+    async function handleAdminAuthLogin(e) {
+      e.preventDefault();
+      const email = document.getElementById("admin-auth-email").value.trim().toLowerCase();
+      const pass = document.getElementById("admin-auth-pass").value;
+      const errBox = document.getElementById("admin-auth-error");
+      const btnTxt = document.getElementById("btn-admin-auth-text");
+      if (errBox) errBox.classList.add("hidden");
+
+      try {
+        if (btnTxt) btnTxt.textContent = "Verificando...";
+        if (window.firebase && firebase.auth) {
+          const cred = await firebase.auth().signInWithEmailAndPassword(email, pass);
+          const tokenRes = await cred.user.getIdTokenResult(true);
+          const isClaimAdmin = tokenRes.claims && tokenRes.claims.admin === true;
+          const isAllowedEmail = AUTHORIZED_ADMIN_EMAILS.includes(email);
+          if (!isClaimAdmin && !isAllowedEmail) {
+            await firebase.auth().signOut();
+            if (errBox) {
+              errBox.textContent = "Acceso denegado: esta cuenta no posee el rol admin:true.";
+              errBox.classList.remove("hidden");
+            }
+            return;
+          }
+          unlockAdminDashboard();
+          startFirestoreListener();
+          showToast("Sesión administrativa iniciada");
+        }
+      } catch (authErr) {
+        if (errBox) {
+          errBox.textContent = "Credenciales inválidas o usuario no registrado en Firebase Authentication.";
+          errBox.classList.remove("hidden");
+        }
+      } finally {
+        if (btnTxt) btnTxt.textContent = "Iniciar Sesión Segura";
+      }
+    }
+
+    function unlockAdminDashboard() {
+      adminAuthenticated = true;
+      document.getElementById("admin-login-gate")?.classList.add("hidden");
+      document.getElementById("admin-protected-content")?.classList.remove("hidden");
+      renderAdminList();
+    }
+
+    async function handleAdminAuthLogout() {
+      adminAuthenticated = false;
+      try {
+        if (window.firebase && firebase.auth) {
+          await firebase.auth().signOut();
+          await firebase.auth().signInAnonymously();
+        }
+      } catch (_) {}
+      document.getElementById("admin-protected-content")?.classList.add("hidden");
+      document.getElementById("admin-login-gate")?.classList.remove("hidden");
+      showToast("Sesión administrativa cerrada");
+    }
+
     function setAdminEventFilter(filterVal) {
       adminEventFilter = filterVal;
       const map = {

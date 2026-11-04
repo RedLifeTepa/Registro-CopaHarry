@@ -1284,6 +1284,10 @@ service cloud.firestore {
             <i data-lucide="search" class="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
             <input id="admin-search-input" type="text" oninput="renderAdminList()" placeholder="Buscar por nombre, folio, celular, categoría..." class="form-input w-full rounded-xl pl-10 pr-4 py-2 text-xs sm:text-sm" />
           </div>
+          <button type="button" id="btn-refresh-admin-records" onclick="startFirestoreListener(); showToast('Sincronizando todos los registros con Firebase...');" class="px-3.5 py-2 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-400/50 text-xs text-emerald-300 font-bold flex items-center gap-1.5" title="Sincronizar todos los registros de Firebase">
+            <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+            <span>Sincronizar</span>
+          </button>
           <button type="button" id="btn-seed-demo" onclick="restoreSampleRecords()" class="hidden px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs text-gray-300 font-semibold" title="Cargar ejemplos de prueba">
             + Ejemplos
           </button>
@@ -1591,10 +1595,51 @@ service cloud.firestore {
     // 3. CONEXIÓN CON FIREBASE (FIRESTORE + REALTIME DB)
     // =========================================================
     let firestorePermissionBlocked = false;
+    let activeFirestoreUnsubscribe = null;
+
+    function mergeRemoteAndLocalRecords(remoteList) {
+      const mapById = new Map();
+      remoteList.forEach(r => {
+        if (r && r.id) mapById.set(r.id, r);
+      });
+      // Also preserve any locally saved records and upload them to Firestore if admin is logged in
+      const missingInRemote = [];
+      registrations.forEach(localRec => {
+        if (localRec && localRec.id && !mapById.has(localRec.id)) {
+          mapById.set(localRec.id, localRec);
+          missingInRemote.push(localRec);
+        }
+      });
+
+      const merged = Array.from(mapById.values());
+      merged.sort((a, b) => (Number(b.timestamp) || 0) - (Number(a.timestamp) || 0));
+      registrations = merged;
+      saveLocalRecords();
+      renderAdminList();
+
+      if (missingInRemote.length > 0 && dbFirestore) {
+        missingInRemote.forEach(rec => {
+          const payload = {
+            ...rec,
+            avisoPrivacidadAceptado: true,
+            edad: Number(rec.edad) || 20,
+            montoTotal: Number(rec.montoTotal) || 600,
+            timestamp: Number(rec.timestamp) || Date.now()
+          };
+          dbFirestore.collection("registros_eventos").doc(rec.id).set(payload, { merge: true }).catch(() => {});
+        });
+      }
+    }
 
     function startFirestoreListener() {
       if (!dbFirestore) return;
-      dbFirestore.collection("registros_eventos").onSnapshot(snapshot => {
+      if (activeFirestoreUnsubscribe) {
+        try { activeFirestoreUnsubscribe(); } catch (_) {}
+        activeFirestoreUnsubscribe = null;
+      }
+
+      // Immediate fetch of all documents in registros_eventos
+      dbFirestore.collection("registros_eventos").get().then(snapshot => {
         firestorePermissionBlocked = false;
         const bar = document.getElementById("firestore-rules-alert");
         if (bar) bar.classList.add("hidden");
@@ -1602,24 +1647,28 @@ service cloud.firestore {
         snapshot.forEach(doc => {
           remoteList.push({ id: doc.id, ...doc.data() });
         });
-        if (remoteList.length > 0) {
-          remoteList.sort((a, b) => (Number(b.timestamp) || 0) - (Number(a.timestamp) || 0));
-          const mapById = new Map();
-          remoteList.forEach(r => mapById.set(r.id, r));
-          registrations.forEach(localRec => {
-            if (!mapById.has(localRec.id)) mapById.set(localRec.id, localRec);
-          });
-          registrations = Array.from(mapById.values());
-          saveLocalRecords();
-          if (currentView === "admin") renderAdminList();
-        }
+        mergeRemoteAndLocalRecords(remoteList);
+      }).catch(() => {});
+
+      // Real-time listener for any new or updated registrations
+      activeFirestoreUnsubscribe = dbFirestore.collection("registros_eventos").onSnapshot(snapshot => {
+        firestorePermissionBlocked = false;
+        const bar = document.getElementById("firestore-rules-alert");
+        if (bar) bar.classList.add("hidden");
+        const remoteList = [];
+        snapshot.forEach(doc => {
+          remoteList.push({ id: doc.id, ...doc.data() });
+        });
+        mergeRemoteAndLocalRecords(remoteList);
       }, err => {
         if (err && (err.code === "permission-denied" || String(err.message).includes("insufficient permissions"))) {
           firestorePermissionBlocked = true;
-          const bar = document.getElementById("firestore-rules-alert");
-          if (bar) bar.classList.remove("hidden");
-          
+          if (adminAuthenticated) {
+            const bar = document.getElementById("firestore-rules-alert");
+            if (bar) bar.classList.remove("hidden");
+          }
         }
+        renderAdminList();
       });
     }
 
@@ -1662,13 +1711,7 @@ service cloud.firestore {
                 }
               }
               if (!user) {
-                firebase.auth(app).signInAnonymously().then(() => {
-                  startFirestoreListener();
-                }).catch(() => {
-                  startFirestoreListener();
-                });
-              } else {
-                startFirestoreListener();
+                firebase.auth(app).signInAnonymously().catch(() => {});
               }
             });
           } else {
@@ -2173,7 +2216,7 @@ service cloud.firestore {
 
     async function handlePowerliftSubmit(e) {
       e.preventDefault();
-      const catChecks = Array.from(document.querySelectorAll('input[name="plCategoria" onchange="selectSinglePlCategory(this)"]:checked')).map(el => el.value);
+      const catChecks = Array.from(document.querySelectorAll('input[name="plCategoria"]:checked')).map(el => el.value);
       if (catChecks.length === 0) {
         showToast("Selecciona al menos una Categoría (ej. -80 kg, Junior, Femenil)");
         return;
@@ -2323,8 +2366,31 @@ service cloud.firestore {
     }
 
     function copyFirestoreRules() {
-      const rulesTxt = "rules_version = '2';\nservice cloud.firestore {\n  match /databases/{database}/documents {\n    match /{document=**} {\n      allow read, write: if true;\n    }\n  }\n}";
-      copyText(rulesTxt, "Reglas de Firestore copiadas. Pégalas en Firebase Console -> Firestore -> Reglas");
+      const rulesTxt = [
+        "rules_version = '2';",
+        "service cloud.firestore {",
+        "  match /databases/{database}/documents {",
+        "    function isAdmin() {",
+        "      return request.auth != null && (",
+        "        request.auth.token.email in ['hola@hola.com', 'admin@copaharry.com', 'harrygymcenter@gmail.com'] ||",
+        "        request.auth.token.firebase.sign_in_provider == 'password' ||",
+        "        request.auth.token.admin == true",
+        "      );",
+        "    }",
+        "    match /users/{userId} {",
+        "      allow read, write: if request.auth != null;",
+        "    }",
+        "    match /registros_eventos/{registroId} {",
+        "      allow create: if request.resource.data.evento in ['Copa Harry', 'Powerlift'];",
+        "      allow read, update, delete: if isAdmin();",
+        "    }",
+        "    match /{document=**} {",
+        "      allow read, write: if false;",
+        "    }",
+        "  }",
+        "}"
+      ].join("\n");
+      copyText(rulesTxt, "Reglas seguras copiadas. Pégalas en Firebase Console -> Firestore -> Reglas");
     }
 
     function copyCurrentConcept() {
@@ -2494,9 +2560,13 @@ service cloud.firestore {
 
     function unlockAdminDashboard() {
       adminAuthenticated = true;
+      adminEventFilter = "ALL";
+      const sInp = document.getElementById("admin-search-input");
+      if (sInp) sInp.value = "";
       document.getElementById("admin-login-gate")?.classList.add("hidden");
       document.getElementById("admin-protected-content")?.classList.remove("hidden");
-      renderAdminList();
+      setAdminEventFilter("ALL");
+      startFirestoreListener();
     }
 
     async function handleAdminAuthLogout() {

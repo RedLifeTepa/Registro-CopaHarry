@@ -2,74 +2,27 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    function isSignedIn() {
-      return request.auth != null;
-    }
-
-    // Reconoce como Admin:
-    // 1. El correo hola@hola.com o correos autorizados
-    // 2. Cualquier cuenta autenticada con Email/Password (sign_in_provider == 'password')
-    // 3. Documento en colección users/{uid} con admin == true o role == 'admin'
-    // 4. Custom claim admin == true
+    // Reconoce al administrador autenticado en confi.html (hola@hola.com o cuenta Email/Password)
     function isAdmin() {
-      return isSignedIn() && (
+      return request.auth != null && (
         request.auth.token.email in ['hola@hola.com', 'admin@copaharry.com', 'harrygymcenter@gmail.com'] ||
         request.auth.token.firebase.sign_in_provider == 'password' ||
-        request.auth.token.admin == true ||
-        (exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
-         (get(/databases/$(database)/documents/users/$(request.auth.uid)).data.admin == true ||
-          get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin'))
+        request.auth.token.admin == true
       );
     }
 
-    function isValidPhone(phone) {
-      return phone is string && phone.matches('^[0-9]{10}$');
-    }
-
-    function isValidRegistration(data) {
-      let allowedKeys = [
-        'id', 'folio', 'evento', 'fechaRegistro', 'timestamp',
-        'estatusPago', 'montoTotal', 'avisoPrivacidadAceptado', 'uidCreador',
-        'nombre', 'edad', 'diaNacimiento', 'mesNacimiento', 'anioNacimiento',
-        'genero', 'numCategorias', 'ciudad', 'estado', 'domicilio',
-        'coach', 'gimnasio', 'team', 'email', 'facebook', 'instagram',
-        'celular', 'telefonoEmergencia', 'pesoCorporal',
-        'catWoman1', 'catWoman2', 'catWoman3',
-        'catMen1', 'catMen2', 'catMen3',
-        'plCategorias', 'ejercicios', 'numEjercicios',
-        'categoriasResumen', 'firmaDataUrl'
-      ];
-
-      return data.keys().hasOnly(allowedKeys)
-        && data.keys().hasAll([
-          'folio', 'evento', 'nombre', 'edad', 'celular',
-          'montoTotal', 'estatusPago', 'avisoPrivacidadAceptado', 'categoriasResumen'
-        ])
-        && data.evento in ['Copa Harry', 'Powerlift']
-        && data.folio is string && data.folio.matches('^(CH|PL)-[0-9]{8}-[0-9]{4}$')
-        && data.nombre is string && data.nombre.size() >= 5 && data.nombre.size() <= 120
-        && data.edad is number && data.edad >= 4 && data.edad <= 95
-        && isValidPhone(data.celular)
-        && data.montoTotal is number && data.montoTotal in [300, 400, 600, 800, 1000, 1400]
-        && data.estatusPago == 'Pendiente'
-        && data.avisoPrivacidadAceptado == true
-        && data.categoriasResumen is string && data.categoriasResumen.size() >= 2 && data.categoriasResumen.size() <= 500;
-    }
-
-    // Permitir al administrador leer su propio documento en /users/{userId} o /admins/{userId}
     match /users/{userId} {
-      allow read: if isSignedIn() && request.auth.uid == userId;
-      allow write: if isAdmin();
+      allow read, write: if request.auth != null;
     }
 
     match /admins/{userId} {
-      allow read: if isSignedIn() && request.auth.uid == userId;
-      allow write: if isAdmin();
+      allow read, write: if request.auth != null;
     }
 
-    // Colección de inscripciones
+    // Permite que cualquier atleta desde cualquier celular/navegador pueda CREAR su inscripción,
+    // y permite que el Administrador lea, actualice o elimine TODOS los registros sin bloqueos.
     match /registros_eventos/{registroId} {
-      allow create: if isSignedIn() && isValidRegistration(request.resource.data);
+      allow create: if request.resource.data.evento in ['Copa Harry', 'Powerlift'];
       allow read, update, delete: if isAdmin();
     }
 

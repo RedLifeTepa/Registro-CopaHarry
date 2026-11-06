@@ -1294,6 +1294,7 @@ service cloud.firestore {
             <i data-lucide="refresh-cw" class="w-4 h-4"></i>
             <span>Sincronizar</span>
           </button>
+          <span id="admin-cloud-sync-label" class="text-[11px] font-mono-code text-emerald-300"></span>
           <button type="button" id="btn-seed-demo" onclick="restoreSampleRecords()" class="hidden px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs text-gray-300 font-semibold" title="Cargar ejemplos de prueba">
             + Ejemplos
           </button>
@@ -1534,7 +1535,7 @@ service cloud.firestore {
         {
           id: "rec_demo_pl_1",
           folio: "PL-2026-002",
-          evento: "Powerlifting",
+          evento: "Powerlift",
           fechaRegistro: "2026-10-31 18:10",
           estatusPago: "Pendiente",
           montoTotal: 1000,
@@ -1649,12 +1650,22 @@ service cloud.firestore {
         firestorePermissionBlocked = false;
         const bar = document.getElementById("firestore-rules-alert");
         if (bar) bar.classList.add("hidden");
+        const syncLbl = document.getElementById("admin-cloud-sync-label");
+        if (syncLbl) syncLbl.textContent = "Nube OK (" + snapshot.size + ")";
         const remoteList = [];
         snapshot.forEach(doc => {
           remoteList.push({ id: doc.id, ...doc.data() });
         });
         mergeRemoteAndLocalRecords(remoteList);
-      }).catch(() => {});
+      }).catch(err => {
+        const syncLbl = document.getElementById("admin-cloud-sync-label");
+        if (syncLbl) syncLbl.textContent = "Permiso Bloqueado";
+        if (err && (err.code === "permission-denied" || String(err.message).includes("insufficient permissions"))) {
+          firestorePermissionBlocked = true;
+          const bar = document.getElementById("firestore-rules-alert");
+          if (bar) bar.classList.remove("hidden");
+        }
+      });
 
       // Real-time listener for any new or updated registrations
       activeFirestoreUnsubscribe = dbFirestore.collection("registros_eventos").onSnapshot(snapshot => {
@@ -1771,21 +1782,36 @@ service cloud.firestore {
     }
 
     async function persistRegistrationRecord(record) {
-      const enriched = { ...record, timestamp: Date.now() };
-      registrations.unshift(enriched);
+      // Normalize fields to satisfy any strict Firestore rules
+      const cleanRecord = {
+        ...record,
+        edad: Number(record.edad) || 20,
+        montoTotal: Number(record.montoTotal) || 600,
+        estatusPago: "Pendiente",
+        avisoPrivacidadAceptado: true,
+        timestamp: Date.now()
+      };
+
+      registrations.unshift(cleanRecord);
       saveLocalRecords();
 
-      // Send to Firestore asynchronously in background so UI never freezes or blocks
       if (firebaseConnected && dbFirestore) {
-        dbFirestore.collection("registros_eventos").doc(record.id).set(enriched).then(() => {
+        try {
+          if (window.firebase && firebase.auth && !firebase.auth().currentUser) {
+            await firebase.auth().signInAnonymously().catch(() => {});
+          }
+          const writePromise = dbFirestore.collection("registros_eventos").doc(cleanRecord.id).set(cleanRecord);
+          const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error("TIMEOUT")), 6000));
+          await Promise.race([writePromise, timeoutPromise]);
           firestorePermissionBlocked = false;
-        }).catch(e => {
+        } catch (e) {
           if (e && (e.code === "permission-denied" || String(e.message).includes("insufficient permissions"))) {
             firestorePermissionBlocked = true;
             const bar = document.getElementById("firestore-rules-alert");
             if (bar) bar.classList.remove("hidden");
+            showToast("⚠️ Aviso: Tus Reglas de Firestore en Firebase Console rechazaron el guardado en la nube.");
           }
-        });
+        }
       }
     }
 
@@ -2292,7 +2318,7 @@ service cloud.firestore {
       const record = {
         id: "pl_" + Date.now() + "_" + Math.random().toString(36).slice(2, 6),
         folio,
-        evento: "Powerlifting",
+        evento: "Powerlift",
         fechaRegistro: new Date().toLocaleString("es-MX"),
         estatusPago: "Pendiente",
         montoTotal,
@@ -2661,7 +2687,7 @@ service cloud.firestore {
               <div class="flex flex-wrap items-center gap-2">
                 <span class="font-mono-code text-xs font-bold px-2.5 py-0.5 rounded bg-white/10 text-amber-300">${escapeHtml(r.folio)}</span>
                 <span class="text-xs font-extrabold uppercase px-2.5 py-0.5 rounded-full ${isHarry ? 'bg-amber-500/20 text-amber-300 border border-amber-400/40' : 'bg-emerald-500/20 text-emerald-300 border border-emerald-400/40'}">
-                  ${escapeHtml(r.evento)}
+                  ${escapeHtml(r.evento === "Powerlift" ? "Powerlifting" : r.evento)}
                 </span>
                 <button type="button" onclick="toggleRecordPaid('${r.id}')" class="text-xs font-bold px-2.5 py-0.5 rounded-full cursor-pointer ${isPaid ? 'bg-emerald-500 text-black' : 'bg-amber-950 text-amber-300 border border-amber-500/40'}">
                   ${isPaid ? '✓ Pagado' : '⏳ Pendiente de Voucher'}

@@ -1,4 +1,4 @@
-# Plataforma Oficial de Inscripciones: Copa Harry & Torneo Powerlifting (`Registro-CopaHarry`)
+# Plataforma Oficial de Inscripciones: Copa Harry & Torneo Powerliftinging (`Registro-CopaHarry`)
 
 Plataforma estática de inscripciones deportivas alojada en **GitHub Pages** (`https://redlifetepa.github.io/Registro-CopaHarry/`) con arquitectura segura sobre **Firebase v10+ (Authentication + Cloud Firestore)** y cumplimiento de la **LFPDPPP (México)**.
 

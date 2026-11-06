@@ -22,7 +22,7 @@ service cloud.firestore {
     // Permite que cualquier atleta desde cualquier celular/navegador pueda CREAR su inscripción,
     // y permite que el Administrador lea, actualice o elimine TODOS los registros sin bloqueos.
     match /registros_eventos/{registroId} {
-      allow create: if request.resource.data.evento in ['Copa Harry', 'Powerlift'];
+      allow create: if request.resource.data.evento in ['Copa Harry', 'Powerlifting', 'Powerlift'];
       allow read, update, delete: if isAdmin();
     }
 

@@ -3,7 +3,7 @@
 Plataforma estática de inscripciones deportivas alojada en **GitHub Pages** (`https://redlifetepa.github.io/Registro-CopaHarry/`) con arquitectura segura sobre **Firebase v10+ (Authentication + Cloud Firestore)** y cumplimiento de la **LFPDPPP (México)**.
 
 ## Estructura de Archivos
-- `index.html` — Landing pública, formularios de inscripción (Copa Harry y Powerlift), validación inline, modal LFPDPPP y vista de confirmación con inyección dinámica de datos bancarios.
+- `index.html` — Landing pública, formularios de inscripción (Copa Harry y Powerlift), validación inline, modal LFPDPPP, envío automático a Google Sheets (`https://script.google.com/macros/s/AKfycbzZNSmXcy-rUR8kf_7Ky1D1jq8h6zPtn7oV5FWCfkxFC4sM0u3ZzlGim7gdIwXaA_-VHw/exec`) y vista de confirmación con descarga de ficha oficial en PDF (sin datos bancarios).
 - `confi.html` — Panel de administración protegido mediante Firebase Auth (Email/Password) + verificación de rol `admin`, con filtros, KPIs, exportación a Excel (`.xlsx`) y descarga de fichas PDF (individual y masivo).
 - `js/firebase-config.js` — Inicialización modular de Firebase v10 (`initializeApp`, `getAuth`, `initializeFirestore`).
 - `js/app.js` — Generador dinámico de folios (`CH-YYYYMMDD-XXXX` y `PL-YYYYMMDD-XXXX`), validación y guardado seguro.

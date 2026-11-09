@@ -36,6 +36,7 @@ export const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = initializeFirestore(app, { experimentalAutoDetectLongPolling: true });
 export const REGISTROS_COLLECTION = "registros_eventos";
+export const GOOGLE_SHEETS_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzZNSmXcy-rUR8kf_7Ky1D1jq8h6zPtn7oV5FWCfkxFC4sM0u3ZzlGim7gdIwXaA_-VHw/exec";
 
 export async function ensureAnonymousSession() {
   if (auth.currentUser) return auth.currentUser;

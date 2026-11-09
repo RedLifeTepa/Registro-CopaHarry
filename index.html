@@ -211,7 +211,7 @@
                 Elige tu Competencia
               </h1>
               <p class="text-sm sm:text-base text-gray-300 mt-1 max-w-2xl">
-                Selecciona el evento en el que deseas competir, completa tu registro oficial y obtén tu ficha con los datos de transferencia para asegurar tu lugar en la tarima.
+                Selecciona el evento en el que deseas competir, completa tu registro oficial y descarga tu ficha oficial de inscripción para asegurar tu lugar en la tarima.
               </p>
             </div>
 
@@ -768,7 +768,7 @@
           <!-- Submit Row -->
           <div class="pt-2 flex flex-col sm:flex-row items-center justify-between gap-4">
             <div class="text-xs text-gray-400">
-              Los campos marcados con (*) son obligatorios. Los datos de transferencia se mostrarán de forma segura al confirmar tu registro.
+              Los campos marcados con (*) son obligatorios. Al confirmar tu registro podrás descargar tu ficha oficial en PDF.
             </div>
             <button type="submit" id="btn-submit-harry" class="w-full sm:w-auto min-w-[260px] py-4 px-8 rounded-2xl bg-gradient-to-r from-red-700 via-red-600 to-amber-600 hover:from-red-600 hover:to-amber-500 text-white font-extrabold text-base uppercase tracking-wider shadow-lg border border-amber-400/40 flex items-center justify-center gap-2">
               <span id="btn-submit-harry-text">Registrarse</span>
@@ -993,7 +993,7 @@
 
           <div class="pt-2 flex flex-col sm:flex-row items-center justify-between gap-4">
             <div class="text-xs text-gray-400">
-              Los campos con (*) son obligatorios. Al guardar tu inscripción se habilitarán tus datos de pago y descarga de ficha PDF.
+              Los campos con (*) son obligatorios. Al guardar tu inscripción podrás descargar tu ficha oficial en PDF.
             </div>
             <button type="submit" id="btn-submit-powerlift" class="w-full sm:w-auto min-w-[260px] py-4 px-8 rounded-2xl jade-btn text-white font-extrabold text-base uppercase tracking-wider flex items-center justify-center gap-2">
               <span id="btn-submit-pl-text">Registrarme en Powerlifting</span>
@@ -1005,7 +1005,7 @@
     </section>
 
     <!-- ==========================================
-         VIEW 4: VENTANA DE TRANSFERENCIA Y PAGO
+         VIEW 4: VENTANA DE CONFIRMACIÓN Y FICHA OFICIAL
          ========================================== -->
     <section id="view-payment" class="hidden max-w-3xl mx-auto space-y-6">
       <div class="stone-panel aztec-border rounded-3xl p-6 sm:p-10 space-y-6 relative overflow-hidden">
@@ -1019,13 +1019,13 @@
                 FOLIO: CH-001
               </span>
               <h2 class="font-aztec text-xl sm:text-2xl font-black gold-gradient-text mt-1">
-                ¡PRE-REGISTRO GUARDADO CON ÉXITO!
+                ¡REGISTRO GUARDADO CON ÉXITO!
               </h2>
             </div>
           </div>
 
           <div class="bg-black/80 border-2 border-amber-400/60 rounded-2xl px-5 py-3 text-center">
-            <span class="block text-[11px] uppercase tracking-wider text-gray-400 font-semibold">Monto de Acceso a Pagar</span>
+            <span class="block text-[11px] uppercase tracking-wider text-gray-400 font-semibold">Total de Inscripción</span>
             <span id="pay-total-amount" class="font-aztec text-2xl sm:text-3xl font-black text-amber-400">$600 MXN</span>
           </div>
         </div>
@@ -1046,99 +1046,31 @@
           </div>
         </div>
 
-        <!-- Transfer Instructions Card (Exact User Data) -->
-        <div class="rounded-3xl bg-gradient-to-br from-[#16221d] via-[#111815] to-[#1f190e] border-2 border-amber-400/50 p-5 sm:p-7 space-y-5 shadow-xl">
-          <div class="flex items-start justify-between gap-3">
-            <div>
-              <p class="text-sm sm:text-base font-bold text-white">
-                ¡Hola! 😀 <span class="text-amber-300">Te comparto mis datos para que puedas transferirme dinero</span> 👇
-              </p>
-              <p class="text-xs text-gray-300 mt-1">
-                Realiza la transferencia por el monto indicado arriba y envía tu comprobante (voucher) al WhatsApp oficial.
-              </p>
-            </div>
-            <span class="px-3 py-1 rounded-full text-xs font-bold bg-sky-500/20 text-sky-300 border border-sky-400/40 shrink-0">
-              Mercado Pago W
-            </span>
-          </div>
-
-          <div class="space-y-3">
-            <!-- CLABE -->
-            <div class="bg-black/65 border border-amber-500/35 rounded-2xl p-3.5 sm:p-4 flex flex-wrap items-center justify-between gap-3">
-              <div>
-                <span class="block text-[11px] uppercase tracking-wider text-gray-400 font-semibold">CLABE Interbancaria (18 dígitos)</span>
-                <span id="bank-clabe-text" class="font-mono-code text-base sm:text-xl font-bold text-amber-300 tracking-wider">Protegido hasta confirmar registro</span>
-              </div>
-              <button type="button" id="btn-copy-clabe" onclick="copyProtectedClabe()" class="px-3.5 py-2 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 border border-amber-400/50 text-amber-200 text-xs font-bold flex items-center gap-1.5">
-                <i data-lucide="copy" class="w-4 h-4"></i>
-                <span>Copiar CLABE</span>
-              </button>
-            </div>
-
-            <!-- Beneficiario e Institución -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <div class="bg-black/55 border border-white/10 rounded-2xl p-3.5 flex items-center justify-between gap-2">
-                <div>
-                  <span class="block text-[11px] uppercase tracking-wider text-gray-400 font-semibold">Beneficiario</span>
-                  <span id="bank-benef-text" class="text-sm font-bold text-white">Disponible al confirmar registro</span>
-                </div>
-                <button type="button" id="btn-copy-benef" onclick="copyProtectedBenef()" class="p-2 rounded-lg bg-white/5 hover:bg-white/10 text-gray-300" title="Copiar Beneficiario">
-                  <i data-lucide="copy" class="w-4 h-4"></i>
-                </button>
-              </div>
-
-              <div class="bg-black/55 border border-white/10 rounded-2xl p-3.5">
-                <span class="block text-[11px] uppercase tracking-wider text-gray-400 font-semibold">Institución Bancaria</span>
-                <span class="text-sm font-bold text-sky-300">Mercado Pago W</span>
-              </div>
-            </div>
-
-            <!-- Mandatory Concept / Reference -->
-            <div class="bg-amber-500/15 border-2 border-amber-400 rounded-2xl p-4 flex flex-wrap items-center justify-between gap-3">
-              <div>
-                <span class="block text-xs font-extrabold uppercase tracking-wider text-amber-300">
-                  ⚠️ Concepto / Referencia Obligatoria en tu Transferencia:
-                </span>
-                <p class="text-xs text-gray-200 mt-0.5">
-                  Debes colocar siempre el nombre de tu evento en el concepto de pago:
-                </p>
-                <span id="pay-concept-badge" class="inline-block mt-1.5 font-aztec text-lg sm:text-xl font-black text-white bg-black/80 px-4 py-1 rounded-lg border border-amber-400">
-                  COPA HARRY
-                </span>
-              </div>
-              <button type="button" id="btn-copy-concept" onclick="copyCurrentConcept()" class="px-3.5 py-2 rounded-xl bg-black/70 hover:bg-black text-amber-300 border border-amber-400/50 text-xs font-bold flex items-center gap-1.5">
-                <i data-lucide="copy" class="w-4 h-4"></i>
-                <span>Copiar Concepto</span>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Step 2: Send Voucher via WhatsApp + Download PDF -->
+        <!-- Download Official PDF & WhatsApp Confirmation -->
         <div class="rounded-2xl bg-emerald-950/40 border border-emerald-500/40 p-5 space-y-4">
           <div class="flex items-start gap-3">
             <div class="w-9 h-9 rounded-xl bg-emerald-500/20 border border-emerald-400/40 flex items-center justify-center text-emerald-300 shrink-0 mt-0.5">
-              <i data-lucide="send" class="w-5 h-5"></i>
+              <i data-lucide="file-check-2" class="w-5 h-5"></i>
             </div>
             <div>
               <h3 class="text-sm sm:text-base font-bold text-emerald-300">
-                Paso Final: Envía tu Voucher de Pago por WhatsApp
+                Descarga tu Ficha Oficial de Inscripción
               </h3>
               <p class="text-xs sm:text-sm text-gray-300 mt-0.5">
-                Una vez realizada tu transferencia, manda la captura o comprobante (voucher) al número oficial de informes <strong>378 112 3145</strong> indicando tu nombre y el evento (<strong id="pay-event-inline">Copa Harry</strong>).
+                Tu inscripción para <strong id="pay-event-inline">Copa Harry</strong> ha quedado registrada en el sistema. Descarga tu ficha oficial en PDF y, si requieres asistencia o confirmar tu registro por WhatsApp, comunícate al número oficial de informes <strong>378 112 3145</strong>.
               </p>
             </div>
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
-            <a id="btn-whatsapp-voucher" href="https://wa.me/523781123145" target="_blank" rel="noopener noreferrer" class="py-3.5 px-5 rounded-xl jade-btn text-white font-extrabold text-sm flex items-center justify-center gap-2 text-center">
-              <i data-lucide="message-circle" class="w-5 h-5"></i>
-              <span>Enviar Voucher al 378 112 3145</span>
-            </a>
             <button type="button" id="btn-download-my-pdf" onclick="downloadCurrentAthletePDF()" class="py-3.5 px-5 rounded-xl gold-btn text-black font-extrabold text-sm flex items-center justify-center gap-2">
               <i data-lucide="file-down" class="w-5 h-5"></i>
               <span>Descargar mi Ficha Oficial (PDF)</span>
             </button>
+            <a id="btn-whatsapp-voucher" href="https://wa.me/523781123145" target="_blank" rel="noopener noreferrer" class="py-3.5 px-5 rounded-xl jade-btn text-white font-extrabold text-sm flex items-center justify-center gap-2 text-center">
+              <i data-lucide="message-circle" class="w-5 h-5"></i>
+              <span>Confirmar por WhatsApp (378 112 3145)</span>
+            </a>
           </div>
         </div>
 
@@ -1205,12 +1137,8 @@
             </p>
           </div>
 
-          <!-- Bulk Export, Manual Quick Entry & Firebase Config Buttons -->
+          <!-- Bulk Export & Firebase Config Buttons -->
           <div class="flex flex-wrap items-center gap-2.5">
-            <button type="button" id="btn-manual-add-athlete" onclick="openManualAddModal()" class="px-3.5 py-2.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 border border-amber-400/50 text-amber-300 text-xs sm:text-sm font-bold flex items-center gap-2" title="Agregar atleta manualmente si te mandó voucher por WhatsApp">
-              <i data-lucide="user-plus" class="w-4 h-4 text-amber-400"></i>
-              <span>+ Agregar Atleta Manual</span>
-            </button>
             <button type="button" id="btn-open-firebase-cfg" onclick="openFirebaseModal()" class="hidden px-3.5 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 border border-amber-400/40 text-amber-300 text-xs sm:text-sm font-bold items-center gap-2">
               <i data-lucide="flame" class="w-4 h-4 text-amber-400"></i>
               <span>Conectar Firebase</span>
@@ -1407,79 +1335,6 @@ service cloud.firestore {
   </div>
 
   <!-- ==========================================
-       MODAL: AGREGAR ATLETA MANUALMENTE (confi.html)
-       ========================================== -->
-  <div id="modal-manual-add" class="fixed inset-0 z-50 hidden bg-black/85 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto" role="dialog" aria-modal="true">
-    <div class="stone-panel aztec-border rounded-3xl max-w-xl w-full p-6 sm:p-8 space-y-4 my-8 max-h-[90vh] overflow-y-auto">
-      <div class="flex items-center justify-between border-b border-amber-500/25 pb-3">
-        <div>
-          <span class="text-[11px] font-bold uppercase tracking-wider text-emerald-400">Panel Administrador</span>
-          <h3 class="font-aztec text-lg sm:text-xl font-black gold-gradient-text">
-            AGREGAR REGISTRO MANUALMENTE
-          </h3>
-        </div>
-        <button type="button" id="btn-close-manual-add" onclick="closeManualAddModal()" class="p-1.5 rounded-lg bg-white/5 hover:bg-white/15 text-gray-300">
-          <i data-lucide="x" class="w-5 h-5"></i>
-        </button>
-      </div>
-
-      <p class="text-xs text-gray-300">
-        Usa este formulario para registrar a cualquier competidor que ya te haya mandado su voucher por WhatsApp si no aparece en la lista de Firebase. Se guardará de inmediato en la nube.
-      </p>
-
-      <form id="form-manual-athlete" onsubmit="handleManualAddSubmit(event)" class="space-y-4">
-        <div>
-          <label for="m-evento" class="block text-xs font-bold uppercase text-gray-300 mb-1">Evento *</label>
-          <select id="m-evento" required class="form-input w-full rounded-xl px-4 py-2.5 text-sm">
-            <option value="Copa Harry">Copa Harry</option>
-            <option value="Powerlift">Torneo Powerlifting</option>
-          </select>
-        </div>
-
-        <div>
-          <label for="m-nombre" class="block text-xs font-bold uppercase text-gray-300 mb-1">Nombre Completo del Atleta *</label>
-          <input id="m-nombre" type="text" required placeholder="Nombre y Apellidos" class="form-input w-full rounded-xl px-4 py-2.5 text-sm" />
-        </div>
-
-        <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label for="m-celular" class="block text-xs font-bold uppercase text-gray-300 mb-1">Celular / WhatsApp *</label>
-            <input id="m-celular" type="tel" required placeholder="10 dígitos" class="form-input w-full rounded-xl px-4 py-2.5 text-sm" />
-          </div>
-          <div>
-            <label for="m-edad" class="block text-xs font-bold uppercase text-gray-300 mb-1">Edad</label>
-            <input id="m-edad" type="number" placeholder="Edad" class="form-input w-full rounded-xl px-4 py-2.5 text-sm" />
-          </div>
-        </div>
-
-        <div>
-          <label for="m-categorias" class="block text-xs font-bold uppercase text-gray-300 mb-1">Categorías / Ejercicios *</label>
-          <input id="m-categorias" type="text" required placeholder="Ej. Miss Bikini Novatas / Sentadilla 180kg" class="form-input w-full rounded-xl px-4 py-2.5 text-sm" />
-        </div>
-
-        <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label for="m-monto" class="block text-xs font-bold uppercase text-gray-300 mb-1">Monto Pagado (MXN) *</label>
-            <input id="m-monto" type="number" required value="600" class="form-input w-full rounded-xl px-4 py-2.5 text-sm" />
-          </div>
-          <div>
-            <label for="m-estatus" class="block text-xs font-bold uppercase text-gray-300 mb-1">Estatus Pago *</label>
-            <select id="m-estatus" class="form-input w-full rounded-xl px-4 py-2.5 text-sm">
-              <option value="Pagado">Pagado</option>
-              <option value="Pendiente">Pendiente</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="pt-3 border-t border-white/10 flex justify-end gap-2">
-          <button type="button" onclick="closeManualAddModal()" class="px-4 py-2.5 rounded-xl bg-white/10 text-gray-200 text-xs font-bold">Cancelar</button>
-          <button type="submit" id="btn-submit-manual-athlete" class="px-5 py-2.5 rounded-xl gold-btn text-black font-extrabold text-xs sm:text-sm">Guardar en Firebase</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- ==========================================
        MODAL: AVISO DE PRIVACIDAD INTEGRAL (LFPDPPP MÉXICO)
        ========================================== -->
   <div id="modal-aviso-privacidad" class="fixed inset-0 z-50 hidden bg-black/85 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto" role="dialog" aria-modal="true" aria-labelledby="privacy-modal-title">
@@ -1557,6 +1412,7 @@ service cloud.firestore {
 
     const STORAGE_KEY_RECORDS = "copa_harry_powerlift_registros_v1";
     const STORAGE_KEY_FB_CONFIG = "copa_harry_firebase_config_v1";
+    const GOOGLE_SHEETS_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzZNSmXcy-rUR8kf_7Ky1D1jq8h6zPtn7oV5FWCfkxFC4sM0u3ZzlGim7gdIwXaA_-VHw/exec";
 
     let dbFirestore = null;
     let dbRealtime = null;
@@ -1715,33 +1571,33 @@ service cloud.firestore {
     }
 
     function startFirestoreListener() {
+      fetchRecordsFromGoogleSheets();
       if (!dbFirestore) return;
       if (activeFirestoreUnsubscribe) {
         try { activeFirestoreUnsubscribe(); } catch (_) {}
         activeFirestoreUnsubscribe = null;
       }
 
-      // Consulta directa de TODOS los documentos en la colección registros_eventos
+      // Immediate fetch of all documents in registros_eventos
       dbFirestore.collection("registros_eventos").get().then(snapshot => {
         firestorePermissionBlocked = false;
         const bar = document.getElementById("firestore-rules-alert");
         if (bar) bar.classList.add("hidden");
         const syncLbl = document.getElementById("admin-cloud-sync-label");
-        if (syncLbl) syncLbl.textContent = "Registros en Nube: " + snapshot.size;
+        if (syncLbl) syncLbl.textContent = "Nube OK (" + snapshot.size + ")";
         const remoteList = [];
         snapshot.forEach(doc => {
           remoteList.push({ id: doc.id, ...doc.data() });
         });
         mergeRemoteAndLocalRecords(remoteList);
-        if (snapshot.size > 0) {
-          showToast("Se cargaron " + snapshot.size + " registros desde Firebase");
-        }
       }).catch(err => {
-        console.error("Error al leer Firestore:", err);
         const syncLbl = document.getElementById("admin-cloud-sync-label");
-        if (syncLbl) syncLbl.textContent = "Error de Permisos en Reglas";
-        const bar = document.getElementById("firestore-rules-alert");
-        if (bar) bar.classList.remove("hidden");
+        if (syncLbl) syncLbl.textContent = "Permiso Bloqueado";
+        if (err && (err.code === "permission-denied" || String(err.message).includes("insufficient permissions"))) {
+          firestorePermissionBlocked = true;
+          const bar = document.getElementById("firestore-rules-alert");
+          if (bar) bar.classList.remove("hidden");
+        }
       });
 
       // Real-time listener for any new or updated registrations
@@ -1858,12 +1714,187 @@ service cloud.firestore {
       }
     }
 
+    function buildGoogleSheetsPayload(rec, actionType = "create") {
+      const ej = rec.ejercicios || {};
+      const fechaNac = [rec.diaNacimiento, rec.mesNacimiento, rec.anioNacimiento].filter(Boolean).join("/");
+      const plCatsStr = Array.isArray(rec.plCategorias) ? rec.plCategorias.join(", ") : (rec.plCategorias || "");
+      return {
+        action: actionType,
+        id: rec.id || "",
+        folio: rec.folio || "",
+        evento: rec.evento || "",
+        fechaRegistro: rec.fechaRegistro || "",
+        estatusPago: rec.estatusPago || "Pendiente",
+        montoTotal: Number(rec.montoTotal || 0),
+        nombre: rec.nombre || "",
+        edad: Number(rec.edad || 0),
+        genero: rec.genero || "",
+        diaNacimiento: rec.diaNacimiento || "",
+        mesNacimiento: rec.mesNacimiento || "",
+        anioNacimiento: rec.anioNacimiento || "",
+        fechaNacimiento: fechaNac,
+        celular: rec.celular || "",
+        telefonoEmergencia: rec.telefonoEmergencia || "",
+        email: rec.email || "",
+        ciudad: rec.ciudad || "",
+        estado: rec.estado || "",
+        domicilio: rec.domicilio || "",
+        coach: rec.coach || "",
+        gimnasio: rec.gimnasio || "",
+        team: rec.team || "",
+        facebook: rec.facebook || "",
+        instagram: rec.instagram || "",
+        numCategorias: rec.numCategorias || rec.numEjercicios || 1,
+        numEjercicios: rec.numEjercicios || 0,
+        categoriasResumen: rec.categoriasResumen || "",
+        catWoman1: rec.catWoman1 || "",
+        catWoman2: rec.catWoman2 || "",
+        catWoman3: rec.catWoman3 || "",
+        catMen1: rec.catMen1 || "",
+        catMen2: rec.catMen2 || "",
+        catMen3: rec.catMen3 || "",
+        plCategorias: Array.isArray(rec.plCategorias) ? rec.plCategorias : (plCatsStr ? plCatsStr.split(/,\s*/) : []),
+        plCategoriasTexto: plCatsStr,
+        bancaPlana1: ej.bancaPlana?.activo ? String(ej.bancaPlana.intento1 || "") : "",
+        sentadilla1: ej.sentadilla?.activo ? String(ej.sentadilla.intento1 || "") : "",
+        pesoMuerto1: ej.pesoMuerto?.activo ? String(ej.pesoMuerto.intento1 || "") : "",
+        ejercicios: ej,
+        pesoCorporal: rec.pesoCorporal || "",
+        avisoPrivacidadAceptado: true,
+        timestamp: Number(rec.timestamp) || Date.now(),
+        firmaDataUrl: rec.firmaDataUrl || ""
+      };
+    }
+
+    async function sendRecordToGoogleSheets(rec, actionType = "create") {
+      if (!GOOGLE_SHEETS_WEBAPP_URL) return false;
+      const payload = buildGoogleSheetsPayload(rec, actionType);
+      const queryParams = new URLSearchParams({
+        action: payload.action,
+        id: payload.id,
+        folio: payload.folio,
+        evento: payload.evento,
+        fechaRegistro: payload.fechaRegistro,
+        estatusPago: payload.estatusPago,
+        montoTotal: String(payload.montoTotal),
+        nombre: payload.nombre,
+        edad: String(payload.edad),
+        genero: payload.genero,
+        fechaNacimiento: payload.fechaNacimiento,
+        celular: payload.celular,
+        telefonoEmergencia: payload.telefonoEmergencia,
+        email: payload.email,
+        ciudad: payload.ciudad,
+        estado: payload.estado,
+        domicilio: payload.domicilio,
+        coach: payload.coach,
+        gimnasio: payload.gimnasio,
+        team: payload.team,
+        facebook: payload.facebook,
+        instagram: payload.instagram,
+        numCategorias: String(payload.numCategorias),
+        categoriasResumen: payload.categoriasResumen,
+        catWoman1: payload.catWoman1,
+        catWoman2: payload.catWoman2,
+        catWoman3: payload.catWoman3,
+        catMen1: payload.catMen1,
+        catMen2: payload.catMen2,
+        catMen3: payload.catMen3,
+        plCategorias: payload.plCategoriasTexto,
+        bancaPlana1: payload.bancaPlana1,
+        sentadilla1: payload.sentadilla1,
+        pesoMuerto1: payload.pesoMuerto1
+      });
+      const targetUrl = GOOGLE_SHEETS_WEBAPP_URL + "?" + queryParams.toString();
+      const bodyStr = JSON.stringify(payload);
+
+      try {
+        await fetch(targetUrl, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: bodyStr
+        });
+        return true;
+      } catch (err) {
+        console.warn("Error enviando a Google Sheets:", err);
+        return false;
+      }
+    }
+
+    async function fetchRecordsFromGoogleSheets() {
+      if (!GOOGLE_SHEETS_WEBAPP_URL) return [];
+      try {
+        const res = await fetch(GOOGLE_SHEETS_WEBAPP_URL + "?action=read&t=" + Date.now(), {
+          method: "GET",
+          headers: { "Accept": "application/json" }
+        });
+        if (!res.ok) return [];
+        const data = await res.json();
+        const rawList = Array.isArray(data)
+          ? data
+          : (Array.isArray(data?.data) ? data.data : (Array.isArray(data?.records) ? data.records : (Array.isArray(data?.registros) ? data.registros : [])));
+        if (!rawList.length) return [];
+        const normalized = rawList.map((r, idx) => ({
+          id: r.id || r.ID || ("gs_" + (r.folio || r.Folio || idx)),
+          folio: r.folio || r.Folio || "",
+          evento: r.evento || r.Evento || "Copa Harry",
+          fechaRegistro: r.fechaRegistro || r["Fecha Registro"] || "",
+          estatusPago: r.estatusPago || r["Estatus Pago"] || "Pendiente",
+          montoTotal: Number(r.montoTotal ?? r["Monto Total (MXN)"] ?? 0),
+          nombre: r.nombre || r["Nombre Completo"] || "",
+          edad: r.edad || r.Edad || "",
+          genero: r.genero || r["Género"] || "",
+          diaNacimiento: r.diaNacimiento || "",
+          mesNacimiento: r.mesNacimiento || "",
+          anioNacimiento: r.anioNacimiento || "",
+          celular: String(r.celular || r.Celular || ""),
+          telefonoEmergencia: String(r.telefonoEmergencia || r["Teléfono Emergencia"] || ""),
+          email: r.email || r.Email || "",
+          ciudad: r.ciudad || r.Ciudad || "",
+          estado: r.estado || r.Estado || "",
+          domicilio: r.domicilio || r.Domicilio || "",
+          coach: r.coach || r.Coach || "",
+          gimnasio: r.gimnasio || r.Gimnasio || "",
+          team: r.team || r.Team || "",
+          facebook: r.facebook || r.Facebook || "",
+          instagram: r.instagram || r.Instagram || "",
+          numCategorias: Number(r.numCategorias || r["Núm. Categorías / Ejercicios"] || 1),
+          numEjercicios: Number(r.numEjercicios || r["Núm. Categorías / Ejercicios"] || 1),
+          categoriasResumen: r.categoriasResumen || r["Resumen Categorías / Ejercicios"] || "",
+          catWoman1: r.catWoman1 || r["Copa Harry WOMAN 1"] || "",
+          catWoman2: r.catWoman2 || r["Copa Harry WOMAN 2"] || "",
+          catWoman3: r.catWoman3 || r["Copa Harry WOMAN 3"] || "",
+          catMen1: r.catMen1 || r["Copa Harry MEN 1"] || "",
+          catMen2: r.catMen2 || r["Copa Harry MEN 2"] || "",
+          catMen3: r.catMen3 || r["Copa Harry MEN 3"] || "",
+          plCategorias: Array.isArray(r.plCategorias)
+            ? r.plCategorias
+            : (r.plCategorias || r["Powerlifting Categorías"] ? String(r.plCategorias || r["Powerlifting Categorías"]).split(/,\s*/).filter(Boolean) : []),
+          ejercicios: r.ejercicios || {
+            bancaPlana: { activo: Boolean(r.bancaPlana1 || r["Banca Plana 1er Intento (kg)"]), intento1: String(r.bancaPlana1 || r["Banca Plana 1er Intento (kg)"] || ""), intento2: "" },
+            sentadilla: { activo: Boolean(r.sentadilla1 || r["Sentadilla 1er Intento (kg)"]), intento1: String(r.sentadilla1 || r["Sentadilla 1er Intento (kg)"] || ""), intento2: "" },
+            pesoMuerto: { activo: Boolean(r.pesoMuerto1 || r["Peso Muerto 1er Intento (kg)"]), intento1: String(r.pesoMuerto1 || r["Peso Muerto 1er Intento (kg)"] || ""), intento2: "" }
+          },
+          firmaDataUrl: r.firmaDataUrl || "",
+          timestamp: Number(r.timestamp) || Date.now()
+        })).filter(r => r.nombre || r.folio);
+        if (normalized.length > 0) {
+          mergeRemoteAndLocalRecords(normalized);
+        }
+        return normalized;
+      } catch (_) {
+        return [];
+      }
+    }
+
     async function persistRegistrationRecord(record) {
+      // Normalize fields to satisfy strict Firestore rules & Google Sheets
       const cleanRecord = {
         ...record,
         edad: Number(record.edad) || 20,
         montoTotal: Number(record.montoTotal) || 600,
-        estatusPago: "Pendiente",
+        estatusPago: record.estatusPago || "Pendiente",
         avisoPrivacidadAceptado: true,
         timestamp: Date.now()
       };
@@ -1871,19 +1902,30 @@ service cloud.firestore {
       registrations.unshift(cleanRecord);
       saveLocalRecords();
 
-      // Guardar de inmediato en Firestore
-      if (dbFirestore) {
-        try {
-          await dbFirestore.collection("registros_eventos").doc(cleanRecord.id).set(cleanRecord, { merge: true });
-          firestorePermissionBlocked = false;
-        } catch (err) {
-          console.error("Error al guardar en Firestore:", err);
-          // Reintento inmediato
+      // Send to Google Sheets Web App in parallel with Firebase Firestore
+      const sheetsPromise = sendRecordToGoogleSheets(cleanRecord, "create");
+
+      const firestorePromise = (async () => {
+        if (firebaseConnected && dbFirestore) {
           try {
-            await dbFirestore.collection("registros_eventos").doc(cleanRecord.id).set(cleanRecord);
-          } catch (e2) {}
+            if (window.firebase && firebase.auth && !firebase.auth().currentUser) {
+              await firebase.auth().signInAnonymously().catch(() => {});
+            }
+            const writePromise = dbFirestore.collection("registros_eventos").doc(cleanRecord.id).set(cleanRecord);
+            const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error("TIMEOUT")), 6000));
+            await Promise.race([writePromise, timeoutPromise]);
+            firestorePermissionBlocked = false;
+          } catch (e) {
+            if (e && (e.code === "permission-denied" || String(e.message).includes("insufficient permissions"))) {
+              firestorePermissionBlocked = true;
+              const bar = document.getElementById("firestore-rules-alert");
+              if (bar) bar.classList.remove("hidden");
+            }
+          }
         }
-      }
+      })();
+
+      await Promise.allSettled([sheetsPromise, firestorePromise]);
     }
 
     function openFirebaseModal() {
@@ -1940,23 +1982,22 @@ service cloud.firestore {
     }
 
     async function syncLocalToFirebase() {
-      if (!firebaseConnected || !dbFirestore) {
-        showToast("Primero guarda y conecta una configuración válida de Firebase");
-        return;
-      }
       let count = 0;
       for (const rec of registrations) {
         try {
-          await dbFirestore.collection("registros_eventos").doc(rec.id).set({
-            ...rec,
-            timestamp: Date.now()
-          });
+          await sendRecordToGoogleSheets(rec, "sync");
+          if (firebaseConnected && dbFirestore) {
+            await dbFirestore.collection("registros_eventos").doc(rec.id).set({
+              ...rec,
+              timestamp: Date.now()
+            });
+          }
           count++;
         } catch (e) {
           console.warn("Sync error:", e);
         }
       }
-      showToast("Sincronizados " + count + " registros con Firebase Firestore");
+      showToast("Sincronizados " + count + " registros con Google Sheets y Firebase");
     }
 
     // =========================================================
@@ -2420,52 +2461,35 @@ service cloud.firestore {
     }
 
     // =========================================================
-    // 7. PANTALLA DE CONFIRMACIÓN Y TRANSFERENCIA BANCARIA
+    // 7. PANTALLA DE CONFIRMACIÓN DE REGISTRO
     // =========================================================
-    let unlockedBankClabe = "";
-    let unlockedBankBenef = "";
-
-    function copyProtectedClabe() {
-      if (!unlockedBankClabe) return;
-      copyText(unlockedBankClabe, "CLABE copiada al portapapeles");
-    }
-
-    function copyProtectedBenef() {
-      if (!unlockedBankBenef) return;
-      copyText(unlockedBankBenef, "Beneficiario copiado");
-    }
-
     function openPaymentScreen(rec) {
-      unlockedBankClabe = ["722969", "010230", "085770"].join("");
-      unlockedBankBenef = ["Miguel Eduardo", "Mendoza Gonzalez"].join(" ");
-
       document.getElementById("pay-folio-badge").textContent = "FOLIO: " + (rec.folio || "");
       document.getElementById("pay-total-amount").textContent = "$" + Number(rec.montoTotal || 0).toLocaleString("es-MX") + " MXN";
       document.getElementById("pay-athlete-name").textContent = rec.nombre || "Atleta Registrado";
       document.getElementById("pay-event-name").textContent = rec.evento === "Copa Harry" ? "Copa Harry" : "Torneo Powerlifting";
       document.getElementById("pay-categories-desc").textContent = rec.categoriasResumen || "";
-      document.getElementById("bank-clabe-text").textContent = unlockedBankClabe;
-      const benefEl = document.getElementById("bank-benef-text");
-      if (benefEl) benefEl.textContent = unlockedBankBenef;
 
       const conceptText = rec.evento === "Copa Harry" ? "Copa HARRY" : "Powerlifting";
-      document.getElementById("pay-concept-badge").textContent = conceptText;
-      document.getElementById("pay-event-inline").textContent = conceptText;
+      const inlineEl = document.getElementById("pay-event-inline");
+      if (inlineEl) inlineEl.textContent = conceptText;
 
       const waMsg = [
-        "¡Hola! Envío mi comprobante de pago (voucher) para finalizar mi inscripción:",
+        "¡Hola! Confirmo mi registro oficial:",
         "• Evento: *" + conceptText + "*",
         "• Folio: *" + rec.folio + "*",
         "• Atleta: *" + rec.nombre + "*",
         "• Categorías/Ejercicios: " + rec.categoriasResumen,
-        "• Monto transferido: *$" + rec.montoTotal + " MXN*"
+        "• Total de inscripción: *$" + rec.montoTotal + " MXN*"
       ].join("\n");
 
       const waBtn = document.getElementById("btn-whatsapp-voucher");
-      waBtn.href = "https://wa.me/523781123145?text=" + encodeURIComponent(waMsg);
+      if (waBtn) {
+        waBtn.href = "https://wa.me/523781123145?text=" + encodeURIComponent(waMsg);
+      }
 
       switchView("payment");
-      showToast("¡Registro guardado! Realiza tu transferencia para confirmar tu lugar");
+      showToast("¡Registro guardado y enviado a Google Sheets! Descarga tu ficha en PDF");
     }
 
     function copyFirestoreRules() {
@@ -2496,12 +2520,7 @@ service cloud.firestore {
       copyText(rulesTxt, "Reglas seguras copiadas. Pégalas en Firebase Console -> Firestore -> Reglas");
     }
 
-    function copyCurrentConcept() {
-      const txt = document.getElementById("pay-concept-badge").textContent.trim();
-      copyText(txt, "Concepto '" + txt + "' copiado al portapapeles");
-    }
-
-    function downloadCurrentAthletePDF() {
+        function downloadCurrentAthletePDF() {
       if (!currentLastRegistered) return;
       generateSingleAthletePDF(currentLastRegistered);
     }
@@ -2685,61 +2704,6 @@ service cloud.firestore {
       showToast("Sesión administrativa cerrada");
     }
 
-    function openManualAddModal() {
-      document.getElementById("modal-manual-add")?.classList.remove("hidden");
-    }
-
-    function closeManualAddModal() {
-      document.getElementById("modal-manual-add")?.classList.add("hidden");
-    }
-
-    async function handleManualAddSubmit(e) {
-      e.preventDefault();
-      const ev = document.getElementById("m-evento").value;
-      const nom = document.getElementById("m-nombre").value.trim();
-      const cel = document.getElementById("m-celular").value.trim();
-      const ed = parseInt(document.getElementById("m-edad").value || "25", 10);
-      const cat = document.getElementById("m-categorias").value.trim();
-      const mon = Number(document.getElementById("m-monto").value || "600");
-      const est = document.getElementById("m-estatus").value;
-
-      const pfx = ev === "Copa Harry" ? "CH" : "PL";
-      const fol = generateDynamicFolio(pfx);
-
-      const rec = {
-        id: (ev === "Copa Harry" ? "ch_" : "pl_") + Date.now(),
-        folio: fol,
-        evento: ev,
-        fechaRegistro: new Date().toLocaleString("es-MX"),
-        estatusPago: est,
-        montoTotal: mon,
-        nombre: nom,
-        edad: ed,
-        celular: cel,
-        categoriasResumen: cat,
-        avisoPrivacidadAceptado: true,
-        timestamp: Date.now()
-      };
-
-      if (ev === "Powerlift") {
-        rec.plCategorias = [cat];
-        rec.ejercicios = {
-          bancaPlana: { activo: true, intento1: "100" },
-          sentadilla: { activo: false },
-          pesoMuerto: { activo: false }
-        };
-      } else {
-        rec.catWoman1 = cat;
-        rec.numCategorias = 1;
-      }
-
-      await persistRegistrationRecord(rec);
-      closeManualAddModal();
-      document.getElementById("form-manual-athlete").reset();
-      startFirestoreListener();
-      showToast("¡Atleta agregado y sincronizado con Firebase!");
-    }
-
     function setAdminEventFilter(filterVal) {
       adminEventFilter = filterVal;
       const map = {
@@ -2816,7 +2780,7 @@ service cloud.firestore {
                   ${escapeHtml(r.evento === "Powerlift" ? "Powerlifting" : r.evento)}
                 </span>
                 <button type="button" onclick="toggleRecordPaid('${r.id}')" class="text-xs font-bold px-2.5 py-0.5 rounded-full cursor-pointer ${isPaid ? 'bg-emerald-500 text-black' : 'bg-amber-950 text-amber-300 border border-amber-500/40'}">
-                  ${isPaid ? '✓ Pagado' : '⏳ Pendiente de Voucher'}
+                  ${isPaid ? '✓ Pagado' : '⏳ Pendiente'}
                 </button>
                 <span class="text-xs text-gray-400">${escapeHtml(r.fechaRegistro || '')}</span>
               </div>
@@ -2928,6 +2892,7 @@ service cloud.firestore {
       if (!rec) return;
       rec.estatusPago = rec.estatusPago === "Pagado" ? "Pendiente" : "Pagado";
       saveLocalRecords();
+      sendRecordToGoogleSheets(rec, "update");
       if (firebaseConnected && dbFirestore) {
         dbFirestore.collection("registros_eventos").doc(rec.id).update({ estatusPago: rec.estatusPago }).catch(() => {});
       }
@@ -2944,6 +2909,8 @@ service cloud.firestore {
     function deleteCurrentModalRecord() {
       if (!currentModalRecordId) return;
       const idToRemove = currentModalRecordId;
+      const recToDelete = registrations.find(r => r.id === idToRemove);
+      if (recToDelete) sendRecordToGoogleSheets(recToDelete, "delete");
       registrations = registrations.filter(r => r.id !== idToRemove);
       saveLocalRecords();
       if (firebaseConnected && dbFirestore) {
@@ -3299,22 +3266,22 @@ service cloud.firestore {
       doc.setFont("helvetica", "normal");
       doc.text(mCats.length ? mCats.join("  •  ") : "No aplica", 19, 189, { maxWidth: 170 });
 
-      // Payment & Transfer Summary Box
+      // Registration Summary Box (Without Payment/Bank Details)
       doc.setFillColor(254, 249, 231);
       doc.roundedRect(14, 206, 182, 34, 3, 3, "FD");
       doc.setFont("helvetica", "bold");
       doc.setFontSize(11);
       doc.setTextColor(146, 64, 14);
-      doc.text("3. RESUMEN DE PAGO Y TRANSFERENCIA", 19, 214);
+      doc.text("3. RESUMEN DE INSCRIPCIÓN", 19, 214);
       doc.setFont("helvetica", "bold");
       doc.setFontSize(13);
       doc.setTextColor(15, 81, 50);
-      doc.text("Monto Total: $" + Number(rec.montoTotal || 0).toLocaleString("es-MX") + " MXN", 19, 223);
+      doc.text("Total Inscripción: $" + Number(rec.montoTotal || 0).toLocaleString("es-MX") + " MXN", 19, 223);
       doc.setFont("helvetica", "normal");
       doc.setFontSize(9);
       doc.setTextColor(40, 40, 40);
-      doc.text("CLABE: 722969010230085770  |  Beneficiario: Miguel Eduardo Mendoza Gonzalez (Mercado Pago W)", 19, 230);
-      doc.text("Concepto obligatorio: Copa HARRY  |  Enviar voucher al WhatsApp: 378 112 3145", 19, 236);
+      doc.text("Folio Oficial: " + (rec.folio || "") + "  |  Evento: Copa Harry", 19, 230);
+      doc.text("Sede: Auditorio Miguel Hidalgo, Tepatitlán  |  Informes WhatsApp: 378 112 3145", 19, 236);
 
       // Signature Box
       doc.setFillColor(255, 255, 255);
@@ -3507,6 +3474,7 @@ service cloud.firestore {
 
       populateBirthSelects();
       loadLocalRecords();
+      fetchRecordsFromGoogleSheets();
       initSignaturePad("sig-canvas-harry");
       initSignaturePad("sig-canvas-pl");
       handleHarryGenderOrCountChange();

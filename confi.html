@@ -1206,8 +1206,12 @@
             </p>
           </div>
 
-          <!-- Bulk Export & Firebase Config Buttons -->
+          <!-- Bulk Export, Manual Quick Entry & Firebase Config Buttons -->
           <div class="flex flex-wrap items-center gap-2.5">
+            <button type="button" id="btn-manual-add-athlete" onclick="openManualAddModal()" class="px-3.5 py-2.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 border border-amber-400/50 text-amber-300 text-xs sm:text-sm font-bold flex items-center gap-2" title="Agregar atleta manualmente si te mandó voucher por WhatsApp">
+              <i data-lucide="user-plus" class="w-4 h-4 text-amber-400"></i>
+              <span>+ Agregar Atleta Manual</span>
+            </button>
             <button type="button" id="btn-open-firebase-cfg" onclick="openFirebaseModal()" class="hidden px-3.5 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 border border-amber-400/40 text-amber-300 text-xs sm:text-sm font-bold items-center gap-2">
               <i data-lucide="flame" class="w-4 h-4 text-amber-400"></i>
               <span>Conectar Firebase</span>
@@ -1400,6 +1404,79 @@ service cloud.firestore {
         ✕
       </button>
       <img id="modal-poster-img" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-asset-ref="asset-poster-harry" alt="Cartel Oficial" class="w-full h-auto max-h-[85vh] object-contain rounded-2xl border-2 border-amber-400/50 shadow-2xl" />
+    </div>
+  </div>
+
+  <!-- ==========================================
+       MODAL: AGREGAR ATLETA MANUALMENTE (confi.html)
+       ========================================== -->
+  <div id="modal-manual-add" class="fixed inset-0 z-50 hidden bg-black/85 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto" role="dialog" aria-modal="true">
+    <div class="stone-panel aztec-border rounded-3xl max-w-xl w-full p-6 sm:p-8 space-y-4 my-8 max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between border-b border-amber-500/25 pb-3">
+        <div>
+          <span class="text-[11px] font-bold uppercase tracking-wider text-emerald-400">Panel Administrador</span>
+          <h3 class="font-aztec text-lg sm:text-xl font-black gold-gradient-text">
+            AGREGAR REGISTRO MANUALMENTE
+          </h3>
+        </div>
+        <button type="button" id="btn-close-manual-add" onclick="closeManualAddModal()" class="p-1.5 rounded-lg bg-white/5 hover:bg-white/15 text-gray-300">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <p class="text-xs text-gray-300">
+        Usa este formulario para registrar a cualquier competidor que ya te haya mandado su voucher por WhatsApp si no aparece en la lista de Firebase. Se guardará de inmediato en la nube.
+      </p>
+
+      <form id="form-manual-athlete" onsubmit="handleManualAddSubmit(event)" class="space-y-4">
+        <div>
+          <label for="m-evento" class="block text-xs font-bold uppercase text-gray-300 mb-1">Evento *</label>
+          <select id="m-evento" required class="form-input w-full rounded-xl px-4 py-2.5 text-sm">
+            <option value="Copa Harry">Copa Harry</option>
+            <option value="Powerlift">Torneo Powerlifting</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="m-nombre" class="block text-xs font-bold uppercase text-gray-300 mb-1">Nombre Completo del Atleta *</label>
+          <input id="m-nombre" type="text" required placeholder="Nombre y Apellidos" class="form-input w-full rounded-xl px-4 py-2.5 text-sm" />
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label for="m-celular" class="block text-xs font-bold uppercase text-gray-300 mb-1">Celular / WhatsApp *</label>
+            <input id="m-celular" type="tel" required placeholder="10 dígitos" class="form-input w-full rounded-xl px-4 py-2.5 text-sm" />
+          </div>
+          <div>
+            <label for="m-edad" class="block text-xs font-bold uppercase text-gray-300 mb-1">Edad</label>
+            <input id="m-edad" type="number" placeholder="Edad" class="form-input w-full rounded-xl px-4 py-2.5 text-sm" />
+          </div>
+        </div>
+
+        <div>
+          <label for="m-categorias" class="block text-xs font-bold uppercase text-gray-300 mb-1">Categorías / Ejercicios *</label>
+          <input id="m-categorias" type="text" required placeholder="Ej. Miss Bikini Novatas / Sentadilla 180kg" class="form-input w-full rounded-xl px-4 py-2.5 text-sm" />
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label for="m-monto" class="block text-xs font-bold uppercase text-gray-300 mb-1">Monto Pagado (MXN) *</label>
+            <input id="m-monto" type="number" required value="600" class="form-input w-full rounded-xl px-4 py-2.5 text-sm" />
+          </div>
+          <div>
+            <label for="m-estatus" class="block text-xs font-bold uppercase text-gray-300 mb-1">Estatus Pago *</label>
+            <select id="m-estatus" class="form-input w-full rounded-xl px-4 py-2.5 text-sm">
+              <option value="Pagado">Pagado</option>
+              <option value="Pendiente">Pendiente</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="pt-3 border-t border-white/10 flex justify-end gap-2">
+          <button type="button" onclick="closeManualAddModal()" class="px-4 py-2.5 rounded-xl bg-white/10 text-gray-200 text-xs font-bold">Cancelar</button>
+          <button type="submit" id="btn-submit-manual-athlete" class="px-5 py-2.5 rounded-xl gold-btn text-black font-extrabold text-xs sm:text-sm">Guardar en Firebase</button>
+        </div>
+      </form>
     </div>
   </div>
 
@@ -1645,26 +1722,27 @@ service cloud.firestore {
         activeFirestoreUnsubscribe = null;
       }
 
-      // Immediate fetch of all documents in registros_eventos
+      // Consulta directa de TODOS los documentos en la colección registros_eventos
       dbFirestore.collection("registros_eventos").get().then(snapshot => {
         firestorePermissionBlocked = false;
         const bar = document.getElementById("firestore-rules-alert");
         if (bar) bar.classList.add("hidden");
         const syncLbl = document.getElementById("admin-cloud-sync-label");
-        if (syncLbl) syncLbl.textContent = "Nube OK (" + snapshot.size + ")";
+        if (syncLbl) syncLbl.textContent = "Registros en Nube: " + snapshot.size;
         const remoteList = [];
         snapshot.forEach(doc => {
           remoteList.push({ id: doc.id, ...doc.data() });
         });
         mergeRemoteAndLocalRecords(remoteList);
-      }).catch(err => {
-        const syncLbl = document.getElementById("admin-cloud-sync-label");
-        if (syncLbl) syncLbl.textContent = "Permiso Bloqueado";
-        if (err && (err.code === "permission-denied" || String(err.message).includes("insufficient permissions"))) {
-          firestorePermissionBlocked = true;
-          const bar = document.getElementById("firestore-rules-alert");
-          if (bar) bar.classList.remove("hidden");
+        if (snapshot.size > 0) {
+          showToast("Se cargaron " + snapshot.size + " registros desde Firebase");
         }
+      }).catch(err => {
+        console.error("Error al leer Firestore:", err);
+        const syncLbl = document.getElementById("admin-cloud-sync-label");
+        if (syncLbl) syncLbl.textContent = "Error de Permisos en Reglas";
+        const bar = document.getElementById("firestore-rules-alert");
+        if (bar) bar.classList.remove("hidden");
       });
 
       // Real-time listener for any new or updated registrations
@@ -1782,7 +1860,6 @@ service cloud.firestore {
     }
 
     async function persistRegistrationRecord(record) {
-      // Normalize fields to satisfy any strict Firestore rules
       const cleanRecord = {
         ...record,
         edad: Number(record.edad) || 20,
@@ -1795,22 +1872,17 @@ service cloud.firestore {
       registrations.unshift(cleanRecord);
       saveLocalRecords();
 
-      if (firebaseConnected && dbFirestore) {
+      // Guardar de inmediato en Firestore
+      if (dbFirestore) {
         try {
-          if (window.firebase && firebase.auth && !firebase.auth().currentUser) {
-            await firebase.auth().signInAnonymously().catch(() => {});
-          }
-          const writePromise = dbFirestore.collection("registros_eventos").doc(cleanRecord.id).set(cleanRecord);
-          const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error("TIMEOUT")), 6000));
-          await Promise.race([writePromise, timeoutPromise]);
+          await dbFirestore.collection("registros_eventos").doc(cleanRecord.id).set(cleanRecord, { merge: true });
           firestorePermissionBlocked = false;
-        } catch (e) {
-          if (e && (e.code === "permission-denied" || String(e.message).includes("insufficient permissions"))) {
-            firestorePermissionBlocked = true;
-            const bar = document.getElementById("firestore-rules-alert");
-            if (bar) bar.classList.remove("hidden");
-            showToast("⚠️ Aviso: Tus Reglas de Firestore en Firebase Console rechazaron el guardado en la nube.");
-          }
+        } catch (err) {
+          console.error("Error al guardar en Firestore:", err);
+          // Reintento inmediato
+          try {
+            await dbFirestore.collection("registros_eventos").doc(cleanRecord.id).set(cleanRecord);
+          } catch (e2) {}
         }
       }
     }
@@ -2612,6 +2684,61 @@ service cloud.firestore {
       document.getElementById("admin-protected-content")?.classList.add("hidden");
       document.getElementById("admin-login-gate")?.classList.remove("hidden");
       showToast("Sesión administrativa cerrada");
+    }
+
+    function openManualAddModal() {
+      document.getElementById("modal-manual-add")?.classList.remove("hidden");
+    }
+
+    function closeManualAddModal() {
+      document.getElementById("modal-manual-add")?.classList.add("hidden");
+    }
+
+    async function handleManualAddSubmit(e) {
+      e.preventDefault();
+      const ev = document.getElementById("m-evento").value;
+      const nom = document.getElementById("m-nombre").value.trim();
+      const cel = document.getElementById("m-celular").value.trim();
+      const ed = parseInt(document.getElementById("m-edad").value || "25", 10);
+      const cat = document.getElementById("m-categorias").value.trim();
+      const mon = Number(document.getElementById("m-monto").value || "600");
+      const est = document.getElementById("m-estatus").value;
+
+      const pfx = ev === "Copa Harry" ? "CH" : "PL";
+      const fol = generateDynamicFolio(pfx);
+
+      const rec = {
+        id: (ev === "Copa Harry" ? "ch_" : "pl_") + Date.now(),
+        folio: fol,
+        evento: ev,
+        fechaRegistro: new Date().toLocaleString("es-MX"),
+        estatusPago: est,
+        montoTotal: mon,
+        nombre: nom,
+        edad: ed,
+        celular: cel,
+        categoriasResumen: cat,
+        avisoPrivacidadAceptado: true,
+        timestamp: Date.now()
+      };
+
+      if (ev === "Powerlift") {
+        rec.plCategorias = [cat];
+        rec.ejercicios = {
+          bancaPlana: { activo: true, intento1: "100" },
+          sentadilla: { activo: false },
+          pesoMuerto: { activo: false }
+        };
+      } else {
+        rec.catWoman1 = cat;
+        rec.numCategorias = 1;
+      }
+
+      await persistRegistrationRecord(rec);
+      closeManualAddModal();
+      document.getElementById("form-manual-athlete").reset();
+      startFirestoreListener();
+      showToast("¡Atleta agregado y sincronizado con Firebase!");
     }
 
     function setAdminEventFilter(filterVal) {

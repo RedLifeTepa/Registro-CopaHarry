@@ -212,7 +212,7 @@
                 Elige tu Competencia
               </h1>
               <p class="text-sm sm:text-base text-gray-300 mt-1 max-w-2xl">
-                Selecciona el evento en el que deseas competir, completa tu registro oficial y descarga tu ficha oficial de inscripción para asegurar tu lugar en la tarima.
+                Selecciona el evento en el que deseas competir, completa tu registro oficial y descarga tu ficha de inscripción. <strong class="text-amber-300">El pago se realizará el día del evento.</strong>
               </p>
             </div>
 
@@ -276,6 +276,11 @@
                   <strong class="font-aztec text-sm sm:text-base text-emerald-400 font-black">NO PAGAN</strong>
                 </div>
               </div>
+            </div>
+
+            <div class="pt-2 border-t border-white/10 flex items-center justify-center sm:justify-start gap-2 text-xs sm:text-sm text-amber-300 font-bold">
+              <i data-lucide="info" class="w-4 h-4 text-amber-400 shrink-0"></i>
+              <span>Importante: El pago de la inscripción se realizará directamente el día del evento en la mesa de registro.</span>
             </div>
           </div>
         </div>
@@ -456,6 +461,7 @@
             <span class="block text-[11px] uppercase tracking-wider text-gray-400 font-semibold">Total Estimado</span>
             <span id="harry-live-price" class="font-aztec text-2xl sm:text-3xl font-black text-amber-400">$600 MXN</span>
             <span id="harry-live-desc" class="block text-[11px] text-emerald-400 font-medium mt-0.5">1 Categoría Atleta</span>
+            <span class="block text-[10px] text-amber-300 font-bold uppercase tracking-wider mt-1">El pago se realizará el día del evento</span>
           </div>
         </div>
 
@@ -769,7 +775,7 @@
           <!-- Submit Row -->
           <div class="pt-2 flex flex-col sm:flex-row items-center justify-between gap-4">
             <div class="text-xs text-gray-400">
-              Los campos marcados con (*) son obligatorios. Al confirmar tu registro podrás descargar tu ficha oficial en PDF.
+              Los campos marcados con (*) son obligatorios. <strong class="text-amber-300">El pago se realizará el día del evento.</strong> Al confirmar tu registro podrás descargar tu ficha oficial en PDF.
             </div>
             <button type="submit" id="btn-submit-harry" class="w-full sm:w-auto min-w-[260px] py-4 px-8 rounded-2xl bg-gradient-to-r from-red-700 via-red-600 to-amber-600 hover:from-red-600 hover:to-amber-500 text-white font-extrabold text-base uppercase tracking-wider shadow-lg border border-amber-400/40 flex items-center justify-center gap-2">
               <span id="btn-submit-harry-text">Registrarse</span>
@@ -825,6 +831,7 @@
               <span class="block text-[11px] uppercase tracking-wider text-gray-400 font-semibold">Total a Pagar</span>
               <span id="pl-live-price" class="font-aztec text-2xl sm:text-3xl font-black text-emerald-400">$400 MXN</span>
               <span id="pl-live-desc" class="block text-[11px] text-amber-300 font-medium">1 Ejercicio</span>
+              <span class="block text-[10px] text-emerald-300 font-bold uppercase tracking-wider mt-1">El pago se realizará el día del evento</span>
             </div>
           </div>
         </div>
@@ -979,6 +986,7 @@
           <div class="rounded-2xl bg-amber-950/30 border border-amber-500/30 p-4 text-xs sm:text-sm text-amber-200 space-y-1 font-medium">
             <p>• <strong>El peso corporal será llenado por el juez el día del evento.</strong></p>
             <p>• <strong>Llenar el peso en kg solo del primer intento de los ejercicios que vas a realizar.</strong></p>
+            <p>• <strong>El pago de la inscripción se realizará el día del evento.</strong></p>
           </div>
 
           <!-- Consentimiento de Aviso de Privacidad LFPDPPP -->
@@ -994,7 +1002,7 @@
 
           <div class="pt-2 flex flex-col sm:flex-row items-center justify-between gap-4">
             <div class="text-xs text-gray-400">
-              Los campos con (*) son obligatorios. Al guardar tu inscripción podrás descargar tu ficha oficial en PDF.
+              Los campos con (*) son obligatorios. <strong class="text-amber-300">El pago se realizará el día del evento.</strong> Al guardar tu inscripción podrás descargar tu ficha oficial en PDF.
             </div>
             <button type="submit" id="btn-submit-powerlift" class="w-full sm:w-auto min-w-[260px] py-4 px-8 rounded-2xl jade-btn text-white font-extrabold text-base uppercase tracking-wider flex items-center justify-center gap-2">
               <span id="btn-submit-pl-text">Registrarme en Powerlifting</span>
@@ -1028,6 +1036,7 @@
           <div class="bg-black/80 border-2 border-amber-400/60 rounded-2xl px-5 py-3 text-center">
             <span class="block text-[11px] uppercase tracking-wider text-gray-400 font-semibold">Total de Inscripción</span>
             <span id="pay-total-amount" class="font-aztec text-2xl sm:text-3xl font-black text-amber-400">$600 MXN</span>
+            <span class="block text-[10px] font-bold uppercase tracking-wider text-emerald-400 mt-1">El pago se realizará el día del evento</span>
           </div>
         </div>
 
@@ -1058,7 +1067,7 @@
                 Descarga tu Ficha Oficial de Inscripción
               </h3>
               <p class="text-xs sm:text-sm text-gray-300 mt-0.5">
-                Tu inscripción para <strong id="pay-event-inline">Copa Harry</strong> ha quedado registrada en el sistema. Descarga tu ficha oficial en PDF y, si requieres asistencia o confirmar tu registro por WhatsApp, comunícate al número oficial de informes <strong>378 112 3145</strong>.
+                Tu inscripción para <strong id="pay-event-inline">Copa Harry</strong> ha quedado registrada en el sistema. <strong class="text-amber-300">El pago se realizará el día del evento</strong> en el módulo de registro presentando tu ficha oficial en PDF. Si requieres asistencia o confirmar tu registro por WhatsApp, comunícate al <strong>378 112 3145</strong>.
               </p>
             </div>
           </div>
@@ -2481,7 +2490,7 @@ service cloud.firestore {
         "• Folio: *" + rec.folio + "*",
         "• Atleta: *" + rec.nombre + "*",
         "• Categorías/Ejercicios: " + rec.categoriasResumen,
-        "• Total de inscripción: *$" + rec.montoTotal + " MXN*"
+        "• Total de inscripción: *$" + rec.montoTotal + " MXN* (El pago se realizará el día del evento)"
       ].join("\n");
 
       const waBtn = document.getElementById("btn-whatsapp-voucher");
@@ -3161,7 +3170,7 @@ service cloud.firestore {
       doc.setFontSize(9.5);
       doc.setTextColor(15, 15, 15);
       doc.text(
-        "Total Inscripción (" + (rec.numEjercicios || 1) + " ejercicio/s): $" + Number(rec.montoTotal || 0).toLocaleString("es-MX") + " MXN   |   Concepto: Powerlifting",
+        "Total Inscripción (" + (rec.numEjercicios || 1) + " ejercicio/s): $" + Number(rec.montoTotal || 0).toLocaleString("es-MX") + " MXN   |   El pago se realizará el día del evento",
         14,
         267
       );
@@ -3277,7 +3286,7 @@ service cloud.firestore {
       doc.setFont("helvetica", "bold");
       doc.setFontSize(13);
       doc.setTextColor(15, 81, 50);
-      doc.text("Total Inscripción: $" + Number(rec.montoTotal || 0).toLocaleString("es-MX") + " MXN", 19, 223);
+      doc.text("Total Inscripción: $" + Number(rec.montoTotal || 0).toLocaleString("es-MX") + " MXN (El pago se realizará el día del evento)", 19, 223);
       doc.setFont("helvetica", "normal");
       doc.setFontSize(9);
       doc.setTextColor(40, 40, 40);
